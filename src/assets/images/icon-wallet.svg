@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20.164" height="18.613" viewBox="0 0 20.164 18.613">
+  <defs>
+    <linearGradient id="linear-gradient" x1="50" x2="50" y2="100" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#f94f4f"/>
+      <stop offset="1" stop-color="#8e3ddf"/>
+    </linearGradient>
+  </defs>
+  <path id="_ionicons_svg_ios-wallet" d="M65.255,68.642H50.908A2.911,2.911,0,0,0,48,71.551v8.143A2.911,2.911,0,0,0,50.908,82.6H65.255a2.91,2.91,0,0,0,2.908-2.908V71.551A2.91,2.91,0,0,0,65.255,68.642Zm-2.962-4.6L50.908,66.263c-.872.194-2.133,1.071-2.133,2.138a3.054,3.054,0,0,1,2.375-.921H65.061v-.994a2.783,2.783,0,0,0-.674-1.822A2.292,2.292,0,0,0,62.294,64.038Z" transform="translate(-48 -63.989)" fill="url(#linear-gradient)"/>
+</svg>

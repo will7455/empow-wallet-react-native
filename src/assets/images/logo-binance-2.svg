@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="28" height="28" viewBox="0 0 28 28">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0" y1="0" x2="30" y2="30" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#6ee2f5"/>
+      <stop offset="1" stop-color="#6454f0"/>
+    </linearGradient>
+  </defs>
+  <g id="Group_7298" data-name="Group 7298" transform="translate(-15 -301.5)">
+    <rect id="Rectangle_1527" data-name="Rectangle 1527" width="28" height="28" rx="8" transform="translate(15 301.5)" fill="url(#linear-gradient)"/>
+    <g id="binance-coin-seeklogo.com" transform="translate(21.467 308.202)">
+      <path id="Path_395" data-name="Path 395" d="M4.593,6.3,7.506,3.39,10.42,6.3,12.115,4.61,7.506,0,2.9,4.608,4.593,6.3M.006,7.5,1.7,5.8,3.4,7.5l-1.7,1.7ZM4.593,8.7,7.506,11.61,10.42,8.7l1.7,1.694h0L7.506,15,2.9,10.392l0,0L4.593,8.7m7.023-1.2,1.7-1.7L15.006,7.5l-1.7,1.7Z" fill="#fff"/>
+      <path id="Path_396" data-name="Path 396" d="M774.259,772.4h0l-1.855-1.855-1.371,1.371h0l-.158.158-.325.325,0,0,0,0,1.853,1.853,1.855-1.855h0" transform="translate(-764.9 -764.906)" fill="#fff"/>
+    </g>
+  </g>
+</svg>

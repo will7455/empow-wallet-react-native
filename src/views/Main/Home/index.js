@@ -5,6 +5,7 @@ import {
     ImageBackground,
     TouchableOpacity,
     FlatList,
+    ActivityIndicator 
 } from 'react-native'
 import Styles from './styled'
 import Arrow from '../../../assets/images/icon-down-arrow.svg'
@@ -64,13 +65,15 @@ class Home extends Component {
 
         if (accountInfo.name == 'EOS' && !accountInfo.address) {
             this.props.navigation.navigate('CreateEos', {
-                publicKey: accountInfo.publicKey
+                publicKey: accountInfo.publicKey,
+                index
             });
             return;
         } else {
             if (accountInfo.name == 'IOST' && !accountInfo.address) {
                 this.props.navigation.navigate('CreateIost', {
-                    publicKey: accountInfo.publicKey
+                    publicKey: accountInfo.publicKey,
+                    index
                 });
                 return;
             } else {
@@ -79,10 +82,6 @@ class Home extends Component {
                 });
             }
         }
-
-        // this.props.navigation.navigate('CreateEos', {
-        //     publicKey: accountInfo.publicKey
-        // });
     }
 
     renderItem = ({ item, index }) => {
@@ -162,6 +161,8 @@ class Home extends Component {
 
 
     render() {
+        console.log(this.props.accountInfo)
+        console.log(StorageService.mnemonic)
         const { totalBalance, totalBalanceBtc } = this.state;
         const setting = StorageService.setting;
         setTimeout(() => {

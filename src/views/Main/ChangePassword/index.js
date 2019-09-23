@@ -20,6 +20,7 @@ export default class ChangePassword extends Component {
             isShowPass: false,
             isShowPassRepeat: false,
             isShowOldPass: false,
+            loading: false
         }
     }
 
@@ -64,23 +65,30 @@ export default class ChangePassword extends Component {
 	}
     
     clickSave = () => {
+        this.setState({
+            loading: true
+        })
+
         if (!this.state.oldPassword || !this.state.password || !this.state.repeatPassword) {
 			this.setState({
-				error: 'Chưa nhập pass'
+                error: 'Chưa nhập pass',
+                loading: false
 			})
 			return
 		}
 
 		if (this.state.password !== this.state.repeatPassword) {
 			this.setState({
-				error: 'pas không khớp'
+                error: 'pas không khớp',
+                loading: false
 			})
 			return
         }
         
         if (StorageService.password !== this.state.oldPassword) {
             this.setState({
-				error: 'Pass cũ không đún'
+                error: 'Pass cũ không đún',
+                loading: false
 			})
 			return
         }
@@ -143,7 +151,7 @@ export default class ChangePassword extends Component {
                         <Text style={[Styles.textGarener, { color: '#ff6a7e' }]}>{this.state.error}</Text>
                     </View>}
 
-                    <Button children="Save" onPress={() => this.clickSave()}></Button>
+                    <Button children="Save" onPress={() => this.clickSave()} isLoading={this.state.loading}></Button>
                     
                 </View>
 

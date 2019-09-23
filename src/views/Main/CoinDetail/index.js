@@ -6,7 +6,8 @@ import {
     FlatList,
     Clipboard,
     Linking,
-    Dimensions
+    Dimensions,
+    ActivityIndicator
 } from 'react-native'
 import Styles from './styled'
 import Back from '../../../components/Back'
@@ -29,6 +30,7 @@ class CoinDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            preRoute: this.props.navigation && this.props.navigation.state && this.props.navigation.state.params && this.props.navigation.state.params.preRoute ? this.props.navigation.state.params.preRoute : '',
             selectedChild2: 0,
             selectedChildMenu: 0,
             index: this.props.navigation && this.props.navigation.state && this.props.navigation.state.params && this.props.navigation.state.params.index ? this.props.navigation.state.params.index : 0
@@ -36,20 +38,20 @@ class CoinDetail extends Component {
     }
 
     async componentDidMount() {
-       await this.getTransactionHistories()
+        await this.getTransactionHistories()
     }
 
     getTransactionHistories = async () => {
-        console.log("vanvan")
         var histories = await WalletService.getTransactionHistories(this.props.accountInfo[this.state.index]);
         this.setState({
             histories
         })
     }
 
-    clickSend = (accountInfo) => {
+    clickSend = () => {
+        const { index } = this.state;
         this.props.navigation.navigate('Send', {
-            accountInfo
+            index
         });
     }
 
@@ -60,6 +62,9 @@ class CoinDetail extends Component {
     }
 
     clickRam = (accountInfo) => {
+        if (!accountInfo) {
+            return;
+        }
         this.props.navigation.navigate('Ram', {
             accountInfo,
             getTransactionHistories: this.getTransactionHistories
@@ -171,20 +176,23 @@ class CoinDetail extends Component {
 
         return (
             <View style={Styles.waperResource}>
-                <TouchableOpacity style={Styles.resource} onPress={() => this.clickRam(accountInfo)}>
+                <TouchableOpacity style={Styles.resource} onPress={() => this.clickRam(accountInfo)} disabled={!isNaN(ramPercent) ? false : true}>
                     <View style={[{ width: `${ramPercent}%` }, Styles.percent]}></View>
                     <Text style={[Styles.textGarener, { fontSize: 13, color: '#ff6a7e' }]}>RAM</Text>
-                    <Text style={[Styles.textGarener, { fontSize: 12 }]}>{ramPercent.toFixed(2)}%</Text>
+                    {!isNaN(ramPercent) && <Text style={[Styles.textGarener, { fontSize: 12 }]}>{ramPercent.toFixed(2)}%</Text>}
+                    {isNaN(ramPercent) && <ActivityIndicator color='white'></ActivityIndicator>}
                 </TouchableOpacity>
-                <TouchableOpacity style={Styles.resource} onPress={() => this.clickCpuOrNet("CPU", accountInfo)}>
+                <TouchableOpacity style={Styles.resource} onPress={() => this.clickCpuOrNet("CPU", accountInfo)} disabled={!isNaN(cpuPercent) ? false : true}>
                     <View style={[{ width: `${cpuPercent}%` }, Styles.percent]}></View>
                     <Text style={[Styles.textGarener, { fontSize: 13, color: '#ff6a7e' }]}>CPU</Text>
-                    <Text style={[Styles.textGarener, { fontSize: 12 }]}>{cpuPercent.toFixed(2)}%</Text>
+                    {!isNaN(cpuPercent) && <Text style={[Styles.textGarener, { fontSize: 12 }]}>{cpuPercent.toFixed(2)}%</Text>}
+                    {isNaN(cpuPercent) && <ActivityIndicator color='white'></ActivityIndicator>}
                 </TouchableOpacity>
-                <TouchableOpacity style={Styles.resource} onPress={() => this.clickCpuOrNet("NET", accountInfo)}>
+                <TouchableOpacity style={Styles.resource} onPress={() => this.clickCpuOrNet("NET", accountInfo)} disabled={!isNaN(netPercent) ? false : true}>
                     <View style={[{ width: `${netPercent}%` }, Styles.percent]}></View>
                     <Text style={[Styles.textGarener, { fontSize: 13, color: '#ff6a7e' }]}>NET</Text>
-                    <Text style={[Styles.textGarener, { fontSize: 12 }]}>{netPercent.toFixed(2)}%</Text>
+                    {!isNaN(netPercent) && <Text style={[Styles.textGarener, { fontSize: 12 }]}>{netPercent.toFixed(2)}%</Text>}
+                    {isNaN(netPercent) && <ActivityIndicator color='white'></ActivityIndicator>}
                 </TouchableOpacity>
             </View>
         )
@@ -275,7 +283,8 @@ class CoinDetail extends Component {
             <View style={Styles.waperContainer}>
                 <View style={Styles.container}>
                     <View style={Styles.waperHeader}>
-                        <Back navigation={this.props.navigation}></Back>
+                        {this.state.preRoute !== 'Search' && <Back preRoute='Home' navigation={this.props.navigation}></Back>}
+                        {this.state.preRoute === 'Search' && <Back navigation={this.props.navigation}></Back>}
                         <Text style={[Styles.textGarener, { marginLeft: 20 }]}>Coin Detail</Text>
                     </View>
                     {this.renderInfo(accountInfo, setting)}
@@ -288,7 +297,7 @@ class CoinDetail extends Component {
                     <TouchableOpacity style={[Styles.button, { backgroundColor: '#f94f4f' }]} onPress={() => this.clickReceive(accountInfo)}>
                         <Text style={[Styles.textGarener, { fontSize: 17 }]}>Receive</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[Styles.button, { backgroundColor: '#8e3ddf' }]} onPress={() => this.clickSend(accountInfo)}>
+                    <TouchableOpacity style={[Styles.button, { backgroundColor: '#8e3ddf' }]} onPress={() => this.clickSend()}>
                         <Text style={[Styles.textGarener, { fontSize: 17 }]}>Send</Text>
                     </TouchableOpacity>
                 </View>

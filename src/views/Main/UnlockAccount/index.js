@@ -16,6 +16,7 @@ class UnlockAccount extends Component {
 
         this.state = {
             isShowPass: false,
+            loading: false
         };
     };
 
@@ -32,16 +33,23 @@ class UnlockAccount extends Component {
     }
 
     clickContinue = () => {
+        this.setState({
+            loading: true
+        })
+
+
         if (!this.state.password) {
             this.setState({
-                error: 'Chưa nhập pass'
+                error: 'Chưa nhập pass',
+                loading: false
             })
             return
         }
 
         if (StorageService.password !== this.state.password) {
             this.setState({
-                error: 'Password not correct'
+                error: 'Password not correct',
+                loading: false
             })
         } else {
             this.props.navigation.navigate('ExportAccount');
@@ -74,7 +82,7 @@ class UnlockAccount extends Component {
                             </TouchableOpacity>}
                         </View>
                     </View>
-                    <Button children="Continue" onPress={() => this.clickContinue()}></Button>
+                    <Button children="Continue" onPress={() => this.clickContinue()} isLoading={this.state.loading}></Button>
                 </View>
             </ImageBackground>
         )

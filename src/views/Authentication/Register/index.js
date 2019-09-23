@@ -24,7 +24,8 @@ class Register extends Component {
 			isShowPass: false,
 			isShowPassRepeat: false,
 			checked: true,
-			error: false
+			error: false,
+			loading: false
 		}
 	}
 
@@ -49,16 +50,22 @@ class Register extends Component {
 	}
 
 	clickContinue = () => {
+		this.setState({
+			loading: true
+		})
+
 		if (!this.state.password || !this.state.repeatPassword) {
 			this.setState({
-				error: 'Chưa nhập pass'
+				error: 'Chưa nhập pass',
+				loading: false
 			})
 			return
 		}
 
 		if (this.state.password !== this.state.repeatPassword) {
 			this.setState({
-				error: 'pas không khớp'
+				error: 'pas không khớp',
+				loading: false
 			})
 			return
 		}
@@ -127,7 +134,7 @@ class Register extends Component {
 					<Text style={[Styles.textGarener, { marginLeft: 5, fontSize: 12 }]} >I agree to the <Text style={{ color: '#ff6a7e' }}>terms of service</Text></Text>
 				</View>
 
-				<Button children="Continue" onPress={() => this.clickContinue()}></Button>
+				<Button children="Continue" onPress={() => this.clickContinue()} isLoading={this.state.loading}></Button>
 			</ImageBackground>
 		)
 	}

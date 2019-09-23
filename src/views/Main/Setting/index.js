@@ -63,7 +63,8 @@ export default class Search extends Component {
                     name: 'Term of service',
                     logo: TermOfService
                 }
-            ]
+            ],
+            loading: false
         }
     }
 
@@ -106,6 +107,10 @@ export default class Search extends Component {
     }
 
     clickLogout = () => {
+        this.setState({
+            loading: true
+        })
+
         this.props.navigation.navigate('Unlock');
     }
 
@@ -139,7 +144,7 @@ export default class Search extends Component {
                         showsVerticalScrollIndicator={true}
                     />
                 </View>
-                <Button children="Log out" onPress={() => this.clickLogout()}></Button>
+                <Button children="Log out" onPress={() => this.clickLogout()} isLoading={this.state.loading}></Button>
                 <Menu navigation={this.props.navigation}></Menu>
             </View>
         )

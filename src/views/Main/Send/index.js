@@ -11,14 +11,15 @@ import Button from '../../../components/Button'
 import PopupTransactionSuccess from '../../../components/PopupTransactionSuccess'
 import WalletService from '../../../services/WalletService'
 import { TX_API } from '../../../constants/index'
+import { connect } from 'react-redux'
 
-export default class Send extends Component {
+class Send extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             error: false,
-            accountInfo: this.props.navigation && this.props.navigation.state && this.props.navigation.state.params && this.props.navigation.state.params.accountInfo ? this.props.navigation.state.params.accountInfo : [],
+            index: this.props.navigation && this.props.navigation.state && this.props.navigation.state.params && this.props.navigation.state.params.index ? this.props.navigation.state.params.index : 0,
             modalVisible: false,
             sendSuccess: false
         }
@@ -45,16 +46,24 @@ export default class Send extends Component {
     }
 
     clickSend = async () => {
-        const { sendTo, sendAmount, sendMemo, accountInfo } = this.state
+        this.setState({
+            loading: true
+        })
+
+        const { sendTo, sendAmount, sendMemo, index } = this.state
+        const accountInfo = this.props.accountInfo[index];
+
         const data = { to: sendTo, value: sendAmount, memo: sendMemo, coinInfo: accountInfo }
         const result = await WalletService.send(data);
 
         if (result.error) {
             this.setState({
-                error: result.error
+                error: result.error,
+                loading: false
             })
         } else {
             this.setState({
+                loading: false,
                 modalVisible: true,
                 sendSuccess: result.txid ? result.txid : 'Send Transaction successfully',
             })
@@ -78,7 +87,8 @@ export default class Send extends Component {
     }
 
     renderModel() {
-        const { accountInfo, sendSuccess } = this.state;
+        const { index, sendSuccess } = this.state;
+        const accountInfo = this.props.accountInfo[index];
 
         let txURL = ''
 
@@ -96,7 +106,8 @@ export default class Send extends Component {
     }
 
     render() {
-        const { accountInfo } = this.state;
+        const { index } = this.state;
+        const accountInfo = this.props.accountInfo[index];
         return (
             <View style={Styles.waperContainer}>
                 <View style={Styles.container}>
@@ -119,7 +130,7 @@ export default class Send extends Component {
                     {this.state.error && <View style={Styles.notify}>
                         <Text style={[Styles.textGarener, { color: '#f94f4f' }]}>{this.state.error}</Text>
                     </View>}
-                    <Button children="Send" onPress={() => this.clickSend()}></Button>
+                    <Button children="Send" onPress={() => this.clickSend()} isLoading={this.state.loading}></Button>
                     {this.renderModel()}
                 </View>
 
@@ -127,3 +138,8 @@ export default class Send extends Component {
         )
     }
 }
+
+export default connect(state => ({
+    accountInfo: state.app.allAccountInfo
+}), ({
+}))(Send)

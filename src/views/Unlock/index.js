@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, ImageBackground, TouchableOpacity, View, TextInput } from 'react-native'
+import { Text, ImageBackground, TouchableOpacity, View, TextInput, ActivityIndicator } from 'react-native'
 import Logo from '../../assets/images/logo-empow.svg'
 import BG from '../../assets/images/bg-loading.png'
 import Styles from './styled'
@@ -16,6 +16,7 @@ class Unlock extends Component {
 
         this.state = {
             isShowPass: false,
+            loading: false
         };
     };
 
@@ -32,6 +33,10 @@ class Unlock extends Component {
     }
 
     clickContinue = () => {
+        this.setState({
+            loading: true
+        })
+
         if (!this.state.password) {
             this.setState({
                 error: 'Chưa nhập pass'
@@ -52,7 +57,8 @@ class Unlock extends Component {
             }
         }).catch(error => {
             this.setState({
-                error: error
+                error: error,
+                loading: false
             })
         })
 
@@ -80,7 +86,7 @@ class Unlock extends Component {
                         </TouchableOpacity>}
                     </View>
                 </View>
-                <Button children="Continue" onPress={() => this.clickContinue()}></Button>
+                <Button children="Continue" onPress={() => this.clickContinue()} isLoading={this.state.loading}></Button>
             </ImageBackground>
         )
     }

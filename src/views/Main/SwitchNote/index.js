@@ -44,6 +44,7 @@ class SwitchNote extends Component {
                     symbol: 'MRX',
                 },
             ],
+            loading: false
         }
     }
 
@@ -76,6 +77,11 @@ class SwitchNote extends Component {
     }
 
     clickSave = () => {
+        this.setState({
+            loading: true
+        })
+
+
         var network = {};
         var data = this.state.data;
 
@@ -153,7 +159,7 @@ class SwitchNote extends Component {
                             extraData={this.state}
                         />
                     </View>
-                    <Button children="Save" onPress={() => this.clickSave()}></Button>
+                    <Button children="Save" onPress={() => this.clickSave()} isLoading={this.state.loading}></Button>
                 </View>
 
             </View>

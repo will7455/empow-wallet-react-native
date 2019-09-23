@@ -19,11 +19,16 @@ export default class RestoreWallet extends Component {
         super(props);
         this.state = {
             mnemonic: '',
-            error: false
+            error: false,
+            loading: false
         }
     }
 
     clickContinue = async () => {
+        this.setState({
+            loading: true
+        })
+
         try {
             await WalletService.restoreWallet(this.state.mnemonic);
 
@@ -35,7 +40,8 @@ export default class RestoreWallet extends Component {
             this.props.navigation.navigate('Main');
         } catch (error) {
             this.setState({
-                error: error.message || "Error" 
+                error: error.message || "Error" ,
+                loading: false
             })
         }
     }
@@ -65,7 +71,7 @@ export default class RestoreWallet extends Component {
                         <Text style={[Styles.textInput, Styles.waperContent]}>Please enter your mnemonic phrase below. This will either be 12 words in length (separated by spaces)</Text>
                     </View>
 
-                    <Button children="Continue" onPress={() => this.clickContinue()}></Button>
+                    <Button children="Continue" onPress={() => this.clickContinue()} isLoading={this.state.loading}></Button>
                 </View>
 
             </ImageBackground>

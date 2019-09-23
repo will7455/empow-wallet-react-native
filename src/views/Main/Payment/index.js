@@ -18,21 +18,50 @@ export default class Payment extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            loading: false,
             accountName: this.props.navigation && this.props.navigation.state && this.props.navigation.state.params && this.props.navigation.state.params.accountName ? this.props.navigation.state.params.accountName : '',
-            publicKey: this.props.navigation && this.props.navigation.state && this.props.navigation.state.params && this.props.navigation.state.params.publicKey ? this.props.navigation.state.params.publicKey : ''
+            publicKey: this.props.navigation && this.props.navigation.state && this.props.navigation.state.params && this.props.navigation.state.params.publicKey ? this.props.navigation.state.params.publicKey : '',
+            index: this.props.navigation && this.props.navigation.state && this.props.navigation.state.params && this.props.navigation.state.params.index ? this.props.navigation.state.params.index : '',
+            payment: this.props.navigation && this.props.navigation.state && this.props.navigation.state.params && this.props.navigation.state.params.payment ? this.props.navigation.state.params.payment : ''
         }
     }
 
     clickCreate = async () => {
-        const { accountName } = this.state
+
+        this.setState({
+            loading: true
+        })
+
+
+        const { accountName, index, payment } = this.state
 
         try {
-            var result = await WalletService.checkEosAccount(accountName);
-            console.log(result)
+            var checkEosAccount = await WalletService.checkEosAccount(accountName);
+
+            if (checkEosAccount) {
+                WalletService.createEosAccount(payment,accountName, async (error) => {
+                    if(error) {
+                        console.log(error)
+                        this.setState({
+                            error: error.message ? error.message : error,
+                            loading: false
+                        })
+                        return;
+                    }
+        
+                    await WalletService.getAllAccountInfo();
+                    WalletService.startPool();
+
+                    this.props.navigation.navigate('CoinDetail', {
+                        index
+                    });
+                })
+            }
         } catch (error) {
-            // this.setState({
-            //     error: error.message
-            // })
+            this.setState({
+                error: error.message,
+                loading: false
+            })
         }
     }
 
@@ -63,7 +92,7 @@ export default class Payment extends Component {
                             <Text style={[Styles.textGarener, { color: '#f94f4f' }]}>Make sure you include this memo when you send it or your funds will be lost!</Text>
                         </View>
 
-                        <Button children="Click after Transfer" onPress={() => this.clickCreate()}></Button>
+                        <Button children="Click after Transfer" onPress={() => this.clickCreate()} isLoading={this.state.loading}></Button>
                     </View>
                 </View>
             </View>

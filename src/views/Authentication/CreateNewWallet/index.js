@@ -20,7 +20,8 @@ export default class CreateNewWallet extends Component {
         super(props);
         this.state = {
             mnemonic: '',
-            error: false
+            error: false,
+            loading: false
         }
     }
 
@@ -38,6 +39,9 @@ export default class CreateNewWallet extends Component {
     }
 
     clickContinue = async () => {
+        this.setState({
+            loading: true
+        })
         try {
             await WalletService.restoreWallet(this.state.mnemonic);
 
@@ -49,7 +53,8 @@ export default class CreateNewWallet extends Component {
             this.props.navigation.navigate('Main');
         } catch (error) {
             this.setState({
-                error: error.message || "Error" 
+                error: error.message || "Error" ,
+                loading: false
             })
         }
     }
@@ -81,7 +86,7 @@ export default class CreateNewWallet extends Component {
                         <Text style={[Styles.textInput, Styles.waperContent]}>Please write down a 12-word Backup Phrase and keep the copy in a secure place</Text>
                     </View>
 
-                    <Button children="Continue" onPress={() => this.clickContinue()}></Button>
+                    <Button children="Continue" onPress={() => this.clickContinue()} isLoading={this.state.loading}></Button>
                 </View>
 
             </ImageBackground>

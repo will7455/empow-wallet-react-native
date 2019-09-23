@@ -9,109 +9,126 @@ import {
 } from 'react-native'
 import Styles from './styled'
 import IconSearch from '../../../assets/images/icon-search.svg'
-import LogoTron from '../../../assets/images/logo-tron-2.svg'
-import LogoBinance from '../../../assets/images/logo-binance-2.svg'
-import LogoBitcoin from '../../../assets/images/logo-bitcoin-2.svg'
-import LogoEthereum from '../../../assets/images/logo-ethereum-2.svg'
-import LogoIota from '../../../assets/images/logo-iota-2.svg'
-import LogoMonero from '../../../assets/images/logo-monero-2.svg'
+import StorageService from '../../../services/StorageService'
+import CoinIcon from '../../../components/CoinIcon'
+import { connect } from 'react-redux';
 
-export default class Search extends Component {
+class Search extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            isShowCoin: true,
-            isShowToken: false,
-            filterResult: [
-                {
-                    name: 'Tron',
-                    symbol: 'TRX',
-                    isEnabled: false
-                },
-                {
-                    name: 'Bitcoin',
-                    symbol: 'BTC',
-                    isEnabled: false
-                },
-                {
-                    name: 'Ethereum',
-                    symbol: 'ETH',
-                    isEnabled: false
-                },
-                {
-                    name: 'Binance',
-                    symbol: 'BNB',
-                    isEnabled: false
-                },
-                {
-                    name: 'Monero',
-                    symbol: 'MRX',
-                    isEnabled: true
-                },
-            ]
+            filterResult: this.props.accountInfo
         }
     }
 
-    onToggle = (index) => {
-        var data = this.state.filterResult[index];
-        data.isEnabled = !data.isEnabled;
+    onClick = (index) => {
+        console.log(index)
+        const accountInfo = this.props.accountInfo[index]
 
-        var filterResult = this.state.filterResult;
-        filterResult[index] = data;
+        if (accountInfo.name == 'EOS' && !accountInfo.address) {
+            this.props.navigation.navigate('CreateEos', {
+                publicKey: accountInfo.publicKey,
+                index
+            });
+            return;
+        } else {
+            if (accountInfo.name == 'IOST' && !accountInfo.address) {
+                this.props.navigation.navigate('CreateIost', {
+                    publicKey: accountInfo.publicKey,
+                    index
+                });
+                return;
+            } else {
+                this.props.navigation.navigate('CoinDetail', {
+                    index,
+                    preRoute: 'Search'
+                });
+            }
+        }
+
+
+    }
+
+    onToggle = (symbol) => {
+        const setting = StorageService.setting;
+        const { listCoinDisabled } = setting
+
+        if (!listCoinDisabled.hasOwnProperty(symbol)) {
+            listCoinDisabled[symbol] = true
+        } else {
+            listCoinDisabled[symbol] = !listCoinDisabled[symbol]
+        }
 
         this.setState({
-            filterResult
+            listCoinDisabled
         })
+
+        StorageService.setting.listCoinDisabled = listCoinDisabled;
     }
 
-    renderLogo(name) {
-        if (name.toLowerCase() === 'tron') {
-            return LogoTron;
-        }
+    onSearch = (text) => {
+        const { accountInfo } = this.props
+        let query = text
+        query = query.trim().toLowerCase()
 
-        if (name.toLowerCase() === 'binance') {
-            return LogoBinance;
-        }
+        let result = []
 
-        if (name.toLowerCase() === 'bitcoin') {
-            return LogoBitcoin;
-        }
+        if (query.trim() == '') {
+            this.setState({
+                filterResult: accountInfo
+            })
+        } else {
+            accountInfo.map((value, index) => {
+                if (value.name.toLowerCase().search(query) != -1 || value.symbol.toLowerCase().search(query) != -1) {
+                    result.push(Object.assign(value, { index }))
+                }
+            })
 
-        if (name.toLowerCase() === 'ethereum') {
-            return LogoEthereum;
-        }
-
-        if (name.toLowerCase() === 'iota') {
-            return LogoIota;
-        }
-
-        if (name.toLowerCase() === 'monero') {
-            return LogoMonero;
+            this.setState({
+                filterResult: result
+            })
         }
     }
 
     renderItem = ({ item, index }) => {
-        var Logo = this.renderLogo(item.name);
+        const { showZeroBalance, listCoinDisabled } = StorageService.setting
+
+        let isEnabled = true;
+        if (!showZeroBalance && (item.balance == 0 || !item.balance)) return;
+        if (listCoinDisabled.hasOwnProperty(item.symbol.toLowerCase())) isEnabled = !listCoinDisabled[item.symbol.toLowerCase()]
+
+        if (item.customToken || item.type == 'BEP2') {
+            item.logo = `logo_${item.type.toLowerCase()}`
+        } else {
+            item.logo = `logo_${item.symbol.toLowerCase()}`
+        }
+
+        if (item.type === 'coin') {
+            item.logo = `logo_${item.name.toLowerCase()}`
+        }
+
+        var Logo = CoinIcon[item.logo] || CoinIcon['logo_888'];
+
         return (
             <View style={[Styles.coin, index === 0 ? { borderTopColor: '#534e73', borderTopWidth: 1 } : '']}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={() => this.onClick(index)}>
                     <View>
                         <Logo></Logo>
                     </View>
-                    <View style={{marginLeft: 10}}>
+                    <View style={{ marginLeft: 10 }}>
                         <Text style={[Styles.textGarener, { fontSize: 14 }]}>{item.name}</Text>
                         <Text style={[Styles.textGarener, { fontSize: 12, color: '#8f90a2' }]}>{item.symbol}</Text>
                     </View>
-                </View>
+                </TouchableOpacity>
 
                 <View>
                     <Switch
                         onTintColor="#B93D91"
                         thumbTintColor="white"
-                        tintColor="#534E73"
-                        onValueChange={() => this.onToggle(index)}
-                        value={item.isEnabled} />
+                        trackColor="#534E73"
+                        onValueChange={() => this.onToggle(item.symbol.toLowerCase())}
+                        value={isEnabled} />
                 </View>
             </View>
         )
@@ -138,7 +155,7 @@ export default class Search extends Component {
                     <View style={Styles.waperHeader}>
                         <View style={Styles.waperSearch}>
                             <IconSearch fill="#aaaaaa"></IconSearch>
-                            <TextInput style={Styles.input}></TextInput>
+                            <TextInput style={Styles.input} onChangeText={(text) => this.onSearch(text)}></TextInput>
                         </View>
                         <TouchableOpacity onPress={() => { this.props.navigation.goBack() }}>
                             <Text style={[Styles.textGarener]}>Cancel</Text>
@@ -150,3 +167,8 @@ export default class Search extends Component {
         )
     }
 }
+
+export default connect(state => ({
+    accountInfo: state.app.allAccountInfo
+}), ({
+}))(Search)

@@ -17,6 +17,7 @@ export default class CpuOrNet extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            loading: false,
             selectedChildMenu: 0,
             selectedValue: 0,
             accountInfo: this.props.navigation && this.props.navigation.state && this.props.navigation.state.params && this.props.navigation.state.params.accountInfo ? this.props.navigation.state.params.accountInfo : [],
@@ -51,7 +52,8 @@ export default class CpuOrNet extends Component {
             this.props.navigation.goBack();
         } catch (error) {
             this.setState({
-                error: error.message
+                error: error.message,
+                loading: false
             })
         }
     }
@@ -65,12 +67,16 @@ export default class CpuOrNet extends Component {
             this.props.navigation.goBack();
         } catch (error) {
             this.setState({
-                error: error.message
+                error: error.message,
+                loading: false
             })
         }
     }
 
     clickConfirm = () => {
+        this.setState({
+            loading: true
+        })
         if (this.state.selectedChildMenu === 0) {
             this.onStake()
         } else {
@@ -303,7 +309,7 @@ export default class CpuOrNet extends Component {
                     </View>}
 
                     <View style={{ marginTop: 20 }}>
-                        <Button children="Confirm" onPress={() => this.clickConfirm()}></Button>
+                        <Button children="Confirm" onPress={() => this.clickConfirm()} isLoading={this.state.loading}></Button>
                     </View>
 
                 </View>

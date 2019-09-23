@@ -12,12 +12,11 @@ import Button from '../../../components/Button'
 import WalletService from '../../../services/WalletService'
 import Utils from '../../../utils/utils'
 
-export default class CreateEos extends Component {
+export default class CreateIost extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            loading: false,
             option: [{ label: 'TRX', value: 0 }, { label: 'ETH', value: 1 }, { label: 'USDT_TRC20', value: 3 }, { label: 'USDT_ERC20', value: 4 }, { label: 'EOS', value: 2 }],
             defaultValue: 0,
             accountName: '',
@@ -38,24 +37,22 @@ export default class CreateEos extends Component {
     }
 
     generateAccount = () => {
+        var vanvan = Utils.generateEosAccount();
+        console.log(vanvan)
         this.setState({
-            accountName: Utils.generateEosAccount()
+            accountName: vanvan
         })
     }
  
     clickCreate = async () => {
-        this.setState({
-            loading: true
-        })
-
         const { accountName, defaultValue, publicKey, index, option } = this.state
 
         if (!accountName) {
-            this.setState({ error: "Account name not blank", loading: false })
+            this.setState({ error: "Account name not blank" })
             return 
         } 
         if (accountName.length != 12) {
-            this.setState({ error: "Account name must be 12 characters", loading: false })
+            this.setState({ error: "Account name must be 12 characters" })
             return
         } 
 
@@ -76,9 +73,9 @@ export default class CreateEos extends Component {
                     
                     WalletService.createEosAccount(data.label,accountName, async (error) => {
                         if(error) {
+                            console.log(error)
                             this.setState({
-                                error: error.message ? error.message : error,
-                                loading: false
+                                error: error.message ? error.message : error
                             })
                             return;
                         }
@@ -93,8 +90,7 @@ export default class CreateEos extends Component {
                 }
             } catch (error) {
                 this.setState({
-                    error: error.message,
-                    loading: false
+                    error: error.message
                 })
             }
         }
@@ -107,9 +103,9 @@ export default class CreateEos extends Component {
     }
 
     onChangeSelect = (itemValue) => {
+        //var data = this.state.option.find(x => x.value === itemValue);
         this.setState({
-            defaultValue: itemValue,
-            error: false
+            defaultValue: itemValue
         })
     }
 
@@ -122,7 +118,7 @@ export default class CreateEos extends Component {
                 <View style={Styles.container}>
                     <View style={Styles.waperHeader}>
                         <Back navigation={this.props.navigation}></Back>
-                        <Text style={[Styles.textGarener, { marginLeft: 20 }]}>CreateEos</Text>
+                        <Text style={[Styles.textGarener, { marginLeft: 20 }]}>CreateIost</Text>
                     </View>
                     <View style={Styles.waperContent}>
                         <View style={Styles.waperInput}>
@@ -172,7 +168,7 @@ export default class CreateEos extends Component {
                         </View>}
 
 
-                        <Button children="Create" onPress={() => this.clickCreate()} isLoading={this.state.loading}></Button>
+                        <Button children="Create" onPress={() => this.clickCreate()}></Button>
                     </View>
                 </View>
             </View>

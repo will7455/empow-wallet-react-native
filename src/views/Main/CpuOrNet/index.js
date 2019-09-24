@@ -47,7 +47,6 @@ export default class CpuOrNet extends Component {
 
         try {
             var result = await WalletService.stake(stakeCpuValueString, stakeNetValueString)
-            console.log(result)
             this.props.navigation.state.params.getTransactionHistories();
             this.props.navigation.goBack();
         } catch (error) {
@@ -62,7 +61,6 @@ export default class CpuOrNet extends Component {
         const { unstakeCpuValueString, unstakeNetValueString } = this.state
         try {
             var result = await WalletService.unstake(unstakeCpuValueString, unstakeNetValueString)
-            console.log(result)
             this.props.navigation.state.params.getTransactionHistories();
             this.props.navigation.goBack();
         } catch (error) {

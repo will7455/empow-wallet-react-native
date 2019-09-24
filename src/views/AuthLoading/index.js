@@ -5,10 +5,13 @@ import ScreenLoading from './ScreenLoading'
 import Swiper from 'react-native-swiper'
 import AsyncStorage from '@react-native-community/async-storage';
 import StorageService from '../../services/StorageService'
+import FirebaseService from '../../services/FirebaseService'
 
 class AuthLoading extends Component {
 
 	async componentDidMount() {
+
+		FirebaseService.init(this.loginCallback.bind(this))
 
 		//await AsyncStorage.clear();
 		const { navigation } = this.props
@@ -20,6 +23,11 @@ class AuthLoading extends Component {
 		}
 	};
 
+	async loginCallback(user) {
+        if(user) {
+            FirebaseService.user = user
+        }
+    }
 
 	render() {
 		return (

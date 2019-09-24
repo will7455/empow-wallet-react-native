@@ -10,7 +10,7 @@ export const CONTRACT_ADDRESS = {
 
 export const MAX_APPROVE_VALUE = "115792089237316195423570985008687907853269984665640564039457584007913129639935"
 
-export const API_ENDPOINT = "http://localhost:8081"
+export const API_ENDPOINT = "https://api.empow.io"
 
 export const CURRENCY_SYMBOL = {
     USD: '$',

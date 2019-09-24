@@ -41,7 +41,6 @@ export default class Payment extends Component {
             if (checkEosAccount) {
                 WalletService.createEosAccount(payment,accountName, async (error) => {
                     if(error) {
-                        console.log(error)
                         this.setState({
                             error: error.message ? error.message : error,
                             loading: false

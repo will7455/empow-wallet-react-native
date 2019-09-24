@@ -39,7 +39,8 @@ class Unlock extends Component {
 
         if (!this.state.password) {
             this.setState({
-                error: 'Chưa nhập pass'
+                error: 'Chưa nhập pass',
+                loading: false
             })
             return
         }

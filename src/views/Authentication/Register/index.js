@@ -70,6 +70,14 @@ class Register extends Component {
 			return
 		}
 
+		if (!this.state.checked) {
+            this.setState({
+				error: 'Please agree our Terms of service',
+				loading: false
+            })
+            return
+        }
+
 		StorageService.init(this.state.password);
 		this.props.navigation.navigate('CreateWallet');
 	}

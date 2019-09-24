@@ -24,6 +24,10 @@ import UnlockAccountScreen from './UnlockAccount'
 import CreateEosScreen from './CreateEos'
 import PaymentScreen from './Payment'
 import CreateIostScreen from './CreateIost'
+import Dapp2Screen from './Dapp2'
+import SignInScreen from './SignIn'
+import SignUpScreen from './SignUp'
+import ForgotPasswordScreen from './ForgotPassword'
 
 const MainNavigation = createStackNavigator({
 	Home: HomeScreen,
@@ -45,7 +49,11 @@ const MainNavigation = createStackNavigator({
 	UnlockAccount: UnlockAccountScreen,
 	CreateEos: CreateEosScreen,
 	Payment: PaymentScreen,
-	CreateIost: CreateIostScreen
+	CreateIost: CreateIostScreen,
+	Dapp2: Dapp2Screen,
+	SignIn: SignInScreen,
+	SignUp: SignUpScreen,
+	ForgotPassword: ForgotPasswordScreen
 }, {
 	initialRouteName: 'Home',
 	headerMode: 'none',

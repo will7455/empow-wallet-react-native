@@ -38,7 +38,6 @@ export default class CreateIost extends Component {
 
     generateAccount = () => {
         var vanvan = Utils.generateEosAccount();
-        console.log(vanvan)
         this.setState({
             accountName: vanvan
         })
@@ -73,7 +72,6 @@ export default class CreateIost extends Component {
                     
                     WalletService.createEosAccount(data.label,accountName, async (error) => {
                         if(error) {
-                            console.log(error)
                             this.setState({
                                 error: error.message ? error.message : error
                             })

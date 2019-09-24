@@ -47,7 +47,6 @@ export default class Ram extends Component {
         const { buyRamValueString } = this.state;
         try {
             var result = await WalletService.buyRam(buyRamValueString)
-            console.log(result)
             this.props.navigation.state.params.getTransactionHistories();
             this.props.navigation.goBack();
         } catch (error) {
@@ -62,7 +61,6 @@ export default class Ram extends Component {
         const { sellRamValueString } = this.state;
         try {
             var result = await WalletService.sellRam(sellRamValueString)
-            console.log(result)
             this.props.navigation.state.params.getTransactionHistories();
             this.props.navigation.goBack();
         } catch (error) {

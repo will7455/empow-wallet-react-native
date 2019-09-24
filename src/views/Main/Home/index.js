@@ -161,8 +161,6 @@ class Home extends Component {
 
 
     render() {
-        console.log(this.props.accountInfo)
-        console.log(StorageService.mnemonic)
         const { totalBalance, totalBalanceBtc } = this.state;
         const setting = StorageService.setting;
         setTimeout(() => {

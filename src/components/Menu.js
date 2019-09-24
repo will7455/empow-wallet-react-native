@@ -1,27 +1,41 @@
 import React from 'react'
 import { StyleSheet, TouchableOpacity, View, Dimensions } from 'react-native'
-import Home from '../assets/images/icon-home.svg'
-import Wallet from '../assets/images/icon-wallet.svg'
-import Muted from '../assets/images/icon-muted.svg'
+import WalletSeleted from '../assets/images/icon-wallet.svg'
+import Wallet from '../assets/images/icon-wallet-selected.svg'
 import Setting from '../assets/images/icon-setting.svg'
+import SettingSelected from '../assets/images/icon-setting-selected.svg'
+import Home from '../assets/images/icon-home.svg'
+import HomeSelected from '../assets/images/icon-home-selected.svg'
+
 
 export default props => {
     const { navigation, onPress, btnStyle, txtStyle } = props
     var routeName = navigation && navigation.state && navigation.state.routeName ? navigation.state.routeName : ''
     return (
         <View style={styles.waperMenu}>
-            <TouchableOpacity style={[styles.default, routeName === 'Home' ? styles.selected : '']} onPress={() => {navigation.navigate('Home')}}>
+            {(routeName !== 'SignIn' && routeName !== 'ForgotPassword' && routeName !== 'SignUp' && routeName !== 'Dapp2') && <TouchableOpacity style={[styles.default, styles.selected]} onPress={() => { navigation.navigate('SignIn') }}>
                 <Home></Home>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.default, routeName === 'Wallet' ? styles.selected : '']}>
+            </TouchableOpacity>}
+
+            {(routeName === 'SignIn' || routeName === 'ForgotPassword' || routeName === 'SignUp' || routeName === 'Dapp2') && <TouchableOpacity style={[styles.default, styles.selected]} onPress={() => { navigation.navigate('SignIn') }}>
+                <HomeSelected></HomeSelected>
+            </TouchableOpacity>}
+
+            {routeName !== 'Home' && <TouchableOpacity style={styles.default} onPress={() => { navigation.navigate('Home') }}>
                 <Wallet></Wallet>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.default, routeName === 'Dapp' ? styles.selected : '']} onPress={() => {navigation.navigate('Dapp')}}>
-                <Muted></Muted>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.default, routeName === 'Setting' ? styles.selected : '']} onPress={() => {navigation.navigate('Setting')}}>
+            </TouchableOpacity>}
+
+            {routeName === 'Home' && <TouchableOpacity style={styles.default} onPress={() => { navigation.navigate('Home') }}>
+                <WalletSeleted></WalletSeleted>
+            </TouchableOpacity>}
+
+            {routeName !== 'Setting' && <TouchableOpacity style={styles.default} onPress={() => { navigation.navigate('Setting') }}>
                 <Setting></Setting>
-            </TouchableOpacity>
+            </TouchableOpacity>}
+
+            {routeName === 'Setting' && <TouchableOpacity style={styles.default} onPress={() => { navigation.navigate('Setting') }}>
+                <SettingSelected></SettingSelected>
+            </TouchableOpacity>}
         </View>
     )
 }
@@ -33,8 +47,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#3c3854',
         justifyContent: 'space-between',
         flexDirection: 'row',
-        position:'absolute',
-        bottom:0,
+        position: 'absolute',
+        bottom: 0,
         elevation: 6
     },
 

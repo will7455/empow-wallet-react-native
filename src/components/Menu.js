@@ -13,20 +13,20 @@ export default props => {
     var routeName = navigation && navigation.state && navigation.state.routeName ? navigation.state.routeName : ''
     return (
         <View style={styles.waperMenu}>
-            {(routeName !== 'SignIn' && routeName !== 'ForgotPassword' && routeName !== 'SignUp' && routeName !== 'Dapp2') && <TouchableOpacity style={[styles.default, styles.selected]} onPress={() => { navigation.navigate('SignIn') }}>
-                <Home></Home>
-            </TouchableOpacity>}
-
-            {(routeName === 'SignIn' || routeName === 'ForgotPassword' || routeName === 'SignUp' || routeName === 'Dapp2') && <TouchableOpacity style={[styles.default, styles.selected]} onPress={() => { navigation.navigate('SignIn') }}>
-                <HomeSelected></HomeSelected>
-            </TouchableOpacity>}
-
             {routeName !== 'Home' && <TouchableOpacity style={styles.default} onPress={() => { navigation.navigate('Home') }}>
                 <Wallet></Wallet>
             </TouchableOpacity>}
 
             {routeName === 'Home' && <TouchableOpacity style={styles.default} onPress={() => { navigation.navigate('Home') }}>
                 <WalletSeleted></WalletSeleted>
+            </TouchableOpacity>}
+
+            {(routeName !== 'SignIn' && routeName !== 'ForgotPassword' && routeName !== 'SignUp' && routeName !== 'Dapp2') && <TouchableOpacity style={[styles.default, styles.selected]} onPress={() => { navigation.navigate('SignIn') }}>
+                <Home></Home>
+            </TouchableOpacity>}
+
+            {(routeName === 'SignIn' || routeName === 'ForgotPassword' || routeName === 'SignUp' || routeName === 'Dapp2') && <TouchableOpacity style={[styles.default, styles.selected]} onPress={() => { navigation.navigate('SignIn') }}>
+                <HomeSelected></HomeSelected>
             </TouchableOpacity>}
 
             {routeName !== 'Setting' && <TouchableOpacity style={styles.default} onPress={() => { navigation.navigate('Setting') }}>

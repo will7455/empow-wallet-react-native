@@ -33,7 +33,8 @@ class SignIn extends Component {
     }
 
     componentDidMount() {
-        FirebaseService.logout();
+       // FirebaseService.logout();
+       console.log(FirebaseService)
         if (FirebaseService.user) {
             this.props.navigation.navigate('Dapp2');
         }
@@ -53,16 +54,18 @@ class SignIn extends Component {
 
         const { email, password } = this.state
 
-        FirebaseService.login(email, password, (error) => {
-            if (error) {
-                this.setState({
-                    error,
-                    loading: false
-                })
-            } else {
-                this.props.navigation.navigate('Dapp2')
-            }
-        })
+        setTimeout(() => {
+            FirebaseService.login(email, password, (error) => {
+                if (error) {
+                    this.setState({
+                        error,
+                        loading: false
+                    })
+                } else {
+                    this.props.navigation.navigate('Dapp2')
+                }
+            })
+        }, 1000);
     }
 
     clickSignUp = () => {
@@ -117,7 +120,7 @@ class SignIn extends Component {
                     </View>
                 </View>
 
-                <TouchableOpacity style={{width:screenWidth - 20, alignItems:'flex-end'}} onPress={() => this.clickForgot()}>
+                <TouchableOpacity style={{ width: screenWidth - 20, alignItems: 'flex-end' }} onPress={() => this.clickForgot()}>
                     <Text style={[Styles.textGarener, Styles.text2]}>Forgot password?</Text>
                 </TouchableOpacity>
 

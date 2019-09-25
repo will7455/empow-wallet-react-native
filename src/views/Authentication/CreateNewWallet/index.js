@@ -25,7 +25,7 @@ export default class CreateNewWallet extends Component {
         }
     }
 
-    componentDidMount () {
+    componentDidMount() {
         try {
             var mnemonic = WalletService.generateMnemonic();
             this.setState({
@@ -33,7 +33,7 @@ export default class CreateNewWallet extends Component {
             })
         } catch (error) {
             this.setState({
-                error: error.message || "Error" 
+                error: error.message || "Error"
             })
         }
     }
@@ -43,17 +43,20 @@ export default class CreateNewWallet extends Component {
             loading: true
         })
         try {
-            await WalletService.restoreWallet(this.state.mnemonic);
+            setTimeout( async () => {
+                await WalletService.restoreWallet(this.state.mnemonic);
 
-            WalletService.init(null);
-            WalletService.updateServiceAddress();
-            await WalletService.getAllAccountInfo();
-            WalletService.startPool();
+                WalletService.init(null);
+                WalletService.updateServiceAddress();
+                await WalletService.getAllAccountInfo();
+                WalletService.startPool();
 
-            this.props.navigation.navigate('Main');
+                this.props.navigation.navigate('Main');
+            }, 1000);
+
         } catch (error) {
             this.setState({
-                error: error.message || "Error" ,
+                error: error.message || "Error",
                 loading: false
             })
         }

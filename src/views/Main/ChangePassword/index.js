@@ -93,9 +93,11 @@ export default class ChangePassword extends Component {
 			return
         }
 
-		StorageService.password = this.state.password
-        StorageService.saveAll()
-        this.props.navigation.navigate('Unlock');
+        setTimeout(() => {
+            StorageService.password = this.state.password
+            StorageService.saveAll()
+            this.props.navigation.navigate('Unlock');
+        }, 1000);
     }
 
     render() {

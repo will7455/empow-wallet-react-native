@@ -1,8 +1,8 @@
 //import extensionizer from 'extensionizer'
 import StorageService from './StorageService'
 //import LeftPanelService from './LeftPanelService'
-//import ApiService from './ApiService'
-//import FirebaseService from './FirebaseService'
+import ApiService from './ApiService'
+import FirebaseService from './FirebaseService'
 import { NODE, CONTRACT_ADDRESS, MAX_APPROVE_VALUE } from '../constants/index'
 import createEosABI from '../utils/createEos.abi.json'
 import createIostABI from '../utils/createIost.abi.json'
@@ -124,23 +124,6 @@ const WalletService = {
         return result
     },
 
-    // async getAppState () {
-
-    //     if(await StorageService.dataExists()) this.appState = APP_STATE.PASSWORD_SET
-
-    //     if(StorageService.ready) {
-    //         this.appState = APP_STATE.UNLOCKED
-
-    //         if(StorageService.accounts) {
-    //             this.appState = APP_STATE.READY
-    //         }
-    //     }
-
-    //     if(this.transactionQueue) this.appState = APP_STATE.SIGN_TRANSACTION
-
-    //     return this.appState
-    // },
-
     restoreWallet(mnemonicPharse) {
         const coinGenerator = CoinGenerator.insertMnemonic(mnemonicPharse)
 
@@ -158,7 +141,6 @@ const WalletService = {
         EthereumService.updateAddressAndPrivateKey(accounts.ethereum.address, accounts.ethereum.privateKey)
         TronService.updateAddressAndPrivateKey(accounts.tron.address, accounts.tron.privateKey)
         BitcoinService.updateAddressAndPrivateKey(accounts.bitcoin.address, accounts.bitcoin.privateKey)
-        BinanceService.updateAddressAndPrivateKey(accounts.binance.address, accounts.binance.privateKey)
 
         RippleService.updateAddressAndKeyPair(accounts.ripple.address, {
             publicKey: accounts.ripple.publicKey.toUpperCase(),
@@ -1184,9 +1166,9 @@ const WalletService = {
         if (transaction.coin == 'ethereum') {
             try {
                 result = transaction.type == 'sign' ? await EthereumService.personalSign(rawTransaction[0]) : await EthereumService.sendTransaction(rawTransaction[0])
-                // if(rawTransaction[0].data && FirebaseService.isLoggedIn) {
-                //     ApiService.addTransactionPending(result, 'ethereum', await FirebaseService.getIdToken())
-                // }
+                if(rawTransaction[0].data && FirebaseService.isLoggedIn) {
+                    ApiService.addTransactionPending(result, 'ethereum', await FirebaseService.getIdToken())
+                }
                 acceptCallback(uuid, messageUUID, rpcData, result)
             } catch (error) {
                 acceptCallback(uuid, messageUUID, rpcData, {
@@ -1199,9 +1181,9 @@ const WalletService = {
             try {
                 result = await TronService.sign(rawTransaction)
 
-                // if(result.raw_data && result.raw_data.contract[0].type == "TriggerSmartContract" && FirebaseService.isLoggedIn) {
-                //     ApiService.addTransactionPending(result.txID, 'tron', await FirebaseService.getIdToken())
-                // }
+                if(result.raw_data && result.raw_data.contract[0].type == "TriggerSmartContract" && FirebaseService.isLoggedIn) {
+                    ApiService.addTransactionPending(result.txID, 'tron', await FirebaseService.getIdToken())
+                }
 
                 acceptCallback(uuid, messageUUID, result)
             } catch (err) {
@@ -1230,9 +1212,9 @@ const WalletService = {
                 let interval = setInterval(() => {
                     IostService.iost.currentRPC.transaction.getTxReceiptByTxHash(result).then(async res => {
                         clearInterval(interval)
-                        // if(res.status_code == 'SUCCESS' && FirebaseService.isLoggedIn) {
-                        //     ApiService.addTransactionPending(res.tx_hash, 'iost', await FirebaseService.getIdToken())
-                        // }
+                        if(res.status_code == 'SUCCESS' && FirebaseService.isLoggedIn) {
+                            ApiService.addTransactionPending(res.tx_hash, 'iost', await FirebaseService.getIdToken())
+                        }
                     })
                 }, 1000)
             } catch (err) {
@@ -1252,30 +1234,6 @@ const WalletService = {
         callback(this.transactionQueue.uuid, this.transactionQueue.messageUUID)
         this.transactionQueue = null
     },
-
-    // async closePopup () {
-    //     if(this.popup == false) return
-
-    //     extensionizer.windows.remove(this.popup.id)
-    //     this.popup = false
-    // },
-
-    // async openPopup() {
-
-    //     if(this.popup != false)
-    //         this.closePopup()
-
-    //     this.popup = await extensionizer.windows.create({
-    //         url: 'popup.html',
-    //         type: 'popup',
-    //         width: 365,
-    //         height: 600,
-    //         left: 25,
-    //         top: 25
-    //     }, res => {
-    //         this.popup = res
-    //     })
-    // },
 }
 
 export default WalletService

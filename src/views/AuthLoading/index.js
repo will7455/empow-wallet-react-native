@@ -6,27 +6,61 @@ import Swiper from 'react-native-swiper'
 import AsyncStorage from '@react-native-community/async-storage';
 import StorageService from '../../services/StorageService'
 import FirebaseService from '../../services/FirebaseService'
+import ApiService from '../../services/ApiService'
+import WalletService from '../../services/WalletService'
 
 class AuthLoading extends Component {
 
 	async componentDidMount() {
 
 		FirebaseService.init(this.loginCallback.bind(this))
-
 		//await AsyncStorage.clear();
 		const { navigation } = this.props
 
 		const dataExists = await StorageService.dataExists();
-
 		if (dataExists) {
 			navigation.navigate('Unlock')
 		}
+
+		WalletService.init(null)
 	};
 
 	async loginCallback(user) {
+		console.log(user)
         if(user) {
+			FirebaseService.isLoggedIn = true
             FirebaseService.user = user
+        } else {
+			FirebaseService.isLoggedIn = false
+		}
+
+		if(!user) return;
+
+		ApiService.addUser(await FirebaseService.getIdToken())
+
+		const listAddress = []
+
+        for(let key in StorageService.accounts) {
+
+            let blockchainType = key
+            let address = StorageService.accounts[key].address
+            if(key == 'eosOwner') continue
+            if(key == 'eosActive') {
+                if(StorageService.accounts[key].address == StorageService.accounts[key].publicKey) continue
+                blockchainType = 'eos'
+            }
+
+            if(key == 'ethereum') {
+                address = address.toLowerCase()
+            }
+
+            listAddress.push({
+                address,
+                blockchainType
+            })
         }
+
+        ApiService.addUserAddreses(listAddress, await FirebaseService.getIdToken())
     }
 
 	render() {

@@ -85,6 +85,33 @@ const styles = StyleSheet.create({
     waperChart: {
         position: 'relative',
         width: 86.5
+    },
+
+    waperConnect: {
+        position: 'absolute',
+        width: '100%',
+        bottom: -90,
+        borderTopColor: '#413d5d',
+        borderTopWidth: 1,
+        borderBottomLeftRadius: 24,
+        borderBottomRightRadius: 24,
+        elevation: 4,
+        backgroundColor: '#534e73',
+        paddingTop: 8,
+        paddingBottom: 15,
+        zIndex: 2
+    },
+    childConnect: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingLeft: 12,
+        paddingRight: 12,
+        marginBottom: 5
+    },
+    showListConnect: {
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 0
     }
 });
 

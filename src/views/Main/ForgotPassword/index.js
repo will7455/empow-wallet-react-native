@@ -34,26 +34,28 @@ class ForgotPassword extends Component {
 
         const { email } = this.state
 
-        FirebaseService.forgot(
-            email,
-            (error) => {
-                if (error) {
-                    console.log(error)
-                    this.setState({
-                        loading: false,
-                        error,
-                        success: false
-                    })
-                } else {
-                    this.setState({
-                        loading: false,
-                        error: false,
-                        success: 'We sent you an email to forgot password. Please check your email'
-                    })
-                }
+        setTimeout(() => {
+            FirebaseService.forgot(
+                email,
+                (error) => {
+                    if (error) {
+                        this.setState({
+                            loading: false,
+                            error,
+                            success: false
+                        })
+                    } else {
+                        this.setState({
+                            loading: false,
+                            error: false,
+                            success: 'We sent you an email to forgot password. Please check your email'
+                        })
+                    }
 
-            }
-        )
+                }
+            )
+        }, 1000);
+
     }
 
     onChangeText = (text) => {

@@ -46,9 +46,12 @@ export default class Ram extends Component {
     buyRam = async () => {
         const { buyRamValueString } = this.state;
         try {
-            var result = await WalletService.buyRam(buyRamValueString)
-            this.props.navigation.state.params.getTransactionHistories();
-            this.props.navigation.goBack();
+            setTimeout(async () => {
+                var result = await WalletService.buyRam(buyRamValueString)
+                this.props.navigation.state.params.getTransactionHistories();
+                this.props.navigation.goBack();
+            }, 1000);
+
         } catch (error) {
             this.setState({
                 error: error.message,
@@ -60,9 +63,11 @@ export default class Ram extends Component {
     sellRam = async () => {
         const { sellRamValueString } = this.state;
         try {
-            var result = await WalletService.sellRam(sellRamValueString)
-            this.props.navigation.state.params.getTransactionHistories();
-            this.props.navigation.goBack();
+            setTimeout(async () => {
+                var result = await WalletService.sellRam(sellRamValueString)
+                this.props.navigation.state.params.getTransactionHistories();
+                this.props.navigation.goBack();
+            }, 1000);
         } catch (error) {
             this.setState({
                 error: error.message,

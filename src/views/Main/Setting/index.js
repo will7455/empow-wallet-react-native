@@ -111,7 +111,9 @@ export default class Search extends Component {
             loading: true
         })
 
-        this.props.navigation.navigate('Unlock');
+        setTimeout(() => {
+            this.props.navigation.navigate('Unlock');
+        }, 1000);
     }
 
     renderItem = ({ item, index }) => {

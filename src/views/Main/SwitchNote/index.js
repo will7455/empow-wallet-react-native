@@ -81,17 +81,17 @@ class SwitchNote extends Component {
             loading: true
         })
 
+        setTimeout(() => {
+            var network = {};
+            var data = this.state.data;
+            for (let i = 0; i < data.length; i++) {
+                network[data[i].name] = data[i].selectedValue;
+            }
 
-        var network = {};
-        var data = this.state.data;
-
-        for (let i = 0; i < data.length; i ++) {
-            network[data[i].name] = data[i].selectedValue;
-        }
-
-        StorageService.setting.network = network;
-        StorageService.save('setting');
-        this.props.navigation.navigate('Setting');
+            StorageService.setting.network = network;
+            StorageService.save('setting');
+            this.props.navigation.navigate('Setting');
+        }, 1000);
     }
 
     renderLogo(name) {

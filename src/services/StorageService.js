@@ -788,6 +788,15 @@ const StorageService = {
         this.saveAccounts()
     },
 
+    updateIostAddress(address) {
+        //if(!this.ready) return;
+
+        console.log(address);
+        this.accounts.iost.address = address
+
+        this.saveAccounts()
+    },
+
     addWhitelist (contractAddress, timeExpired) {
         this.whitelist[contractAddress] = timeExpired
         this.saveWhitelist()

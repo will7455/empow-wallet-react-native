@@ -45,23 +45,25 @@ class Unlock extends Component {
             return
         }
 
-        StorageService.unlock(this.state.password).then(async () => {
-            const accounts = StorageService.accounts;
-            if (accounts) {
-                WalletService.init(null);
-                WalletService.updateServiceAddress();
-                await WalletService.getAllAccountInfo();
-                WalletService.startPool();
-                this.props.navigation.navigate('Main');
-            } else {
-                this.props.navigation.navigate('CreateWallet');
-            }
-        }).catch(error => {
-            this.setState({
-                error: error,
-                loading: false
+        setTimeout(async () => {
+            StorageService.unlock(this.state.password).then(async () => {
+                const accounts = StorageService.accounts;
+                if (accounts) {
+                    WalletService.init(null);
+                    WalletService.updateServiceAddress();
+                    await WalletService.getAllAccountInfo();
+                    WalletService.startPool();
+                    this.props.navigation.navigate('Main');
+                } else {
+                    this.props.navigation.navigate('CreateWallet');
+                }
+            }).catch(error => {
+                this.setState({
+                    error: error,
+                    loading: false
+                })
             })
-        })
+        }, 1000);
 
     }
 

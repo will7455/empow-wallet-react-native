@@ -46,9 +46,11 @@ export default class CpuOrNet extends Component {
         const { stakeCpuValueString, stakeNetValueString } = this.state
 
         try {
-            var result = await WalletService.stake(stakeCpuValueString, stakeNetValueString)
-            this.props.navigation.state.params.getTransactionHistories();
-            this.props.navigation.goBack();
+            setTimeout(async () => {
+                var result = await WalletService.stake(stakeCpuValueString, stakeNetValueString)
+                this.props.navigation.state.params.getTransactionHistories();
+                this.props.navigation.goBack();
+            }, 1000);
         } catch (error) {
             this.setState({
                 error: error.message,
@@ -60,9 +62,11 @@ export default class CpuOrNet extends Component {
     onUnstake = async () => {
         const { unstakeCpuValueString, unstakeNetValueString } = this.state
         try {
-            var result = await WalletService.unstake(unstakeCpuValueString, unstakeNetValueString)
-            this.props.navigation.state.params.getTransactionHistories();
-            this.props.navigation.goBack();
+            setTimeout(async () => {
+                var result = await WalletService.unstake(unstakeCpuValueString, unstakeNetValueString)
+                this.props.navigation.state.params.getTransactionHistories();
+                this.props.navigation.goBack();
+            }, 1000);
         } catch (error) {
             this.setState({
                 error: error.message,

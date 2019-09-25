@@ -35,33 +35,36 @@ export default class Payment extends Component {
 
         const { accountName, index, payment } = this.state
 
-        try {
-            var checkEosAccount = await WalletService.checkEosAccount(accountName);
+        setTimeout(async () => {
+            try {
+                var checkEosAccount = await WalletService.checkEosAccount(accountName);
 
-            if (checkEosAccount) {
-                WalletService.createEosAccount(payment,accountName, async (error) => {
-                    if(error) {
-                        this.setState({
-                            error: error.message ? error.message : error,
-                            loading: false
-                        })
-                        return;
-                    }
-        
-                    await WalletService.getAllAccountInfo();
-                    WalletService.startPool();
+                if (checkEosAccount) {
+                    WalletService.createEosAccount(payment, accountName, async (error) => {
+                        if (error) {
+                            this.setState({
+                                error: error.message ? error.message : error,
+                                loading: false
+                            })
+                            return;
+                        }
 
-                    this.props.navigation.navigate('CoinDetail', {
-                        index
-                    });
+                        await WalletService.getAllAccountInfo();
+                        WalletService.startPool();
+
+                        this.props.navigation.navigate('CoinDetail', {
+                            index
+                        });
+                    })
+                }
+            } catch (error) {
+                this.setState({
+                    error: error.message,
+                    loading: false
                 })
             }
-        } catch (error) {
-            this.setState({
-                error: error.message,
-                loading: false
-            })
-        }
+        }, 1000);
+
     }
 
     render() {
@@ -82,7 +85,7 @@ export default class Payment extends Component {
                             <View style={Styles.waperInput}>
                                 <Text style={[Styles.textGarener]}>{accountName}-{publicKey.substring(0, 20) + '...'}</Text>
                                 <TouchableOpacity style={{ position: 'absolute', right: 10, bottom: 10 }} onPress={() => { Clipboard.setString(`${accountName}-${publicKey}`) }}>
-                                    <IconCopy/>
+                                    <IconCopy />
                                 </TouchableOpacity>
                             </View>
                         </View>

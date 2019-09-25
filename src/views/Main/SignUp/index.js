@@ -84,20 +84,22 @@ class SignUp extends Component {
             return
         }
 
-        FirebaseService.register(
-            email,
-            password,
-            async (error) => {
-                if (error) {
-                    this.setState({
-                        error,
-                        loading: false,
-                    })
-                } else {
-                    this.props.navigation.navigate('Dapp2')
+        setTimeout(() => {
+            FirebaseService.register(
+                email,
+                password,
+                async (error) => {
+                    if (error) {
+                        this.setState({
+                            error,
+                            loading: false,
+                        })
+                    } else {
+                        this.props.navigation.navigate('Dapp2')
+                    }
                 }
-            }
-        )
+            )
+        }, 1000);
     }
 
     onChangeText = (text, index) => {

@@ -52,7 +52,9 @@ class UnlockAccount extends Component {
                 loading: false
             })
         } else {
-            this.props.navigation.navigate('ExportAccount');
+            setTimeout(() => {
+                this.props.navigation.navigate('ExportAccount');
+            }, 1000);
         }
     }
 

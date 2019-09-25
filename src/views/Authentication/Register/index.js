@@ -78,8 +78,10 @@ class Register extends Component {
             return
         }
 
-		StorageService.init(this.state.password);
-		this.props.navigation.navigate('CreateWallet');
+		setTimeout(() => {
+			StorageService.init(this.state.password);
+			this.props.navigation.navigate('CreateWallet');
+		}, 1000);
 	}
 	
 	onChangeText = (text, index) => {

@@ -3,6 +3,7 @@ import { API_ENDPOINT } from './constants/index'
 
 const ServerAPI = {
     getUserPoint(idToken) {
+        console.log(idToken)
         return new Promise((resolve, reject) => {
             Axios.get(`${API_ENDPOINT}/user/point?idToken=${idToken}`)
                 .then(res => (resolve(res.data.value)))

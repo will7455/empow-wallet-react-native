@@ -3,8 +3,6 @@ import {
     View,
     Text,
     ImageBackground,
-    TouchableOpacity,
-    Keyboard,
     TextInput
 } from 'react-native'
 import BG from '../../../assets/images/bg-loading.png'
@@ -30,14 +28,14 @@ export default class RestoreWallet extends Component {
         })
 
         try {
-            await WalletService.restoreWallet(this.state.mnemonic);
-
-            WalletService.init(null);
-            WalletService.updateServiceAddress();
-            await WalletService.getAllAccountInfo();
-            WalletService.startPool();
-
-            this.props.navigation.navigate('Main');
+            setTimeout(async () => {
+                await WalletService.restoreWallet(this.state.mnemonic);
+                WalletService.init(null);
+                WalletService.updateServiceAddress();
+                await WalletService.getAllAccountInfo();
+                WalletService.startPool();
+                this.props.navigation.navigate('Main');
+            }, 1000);
         } catch (error) {
             this.setState({
                 error: error.message || "Error" ,

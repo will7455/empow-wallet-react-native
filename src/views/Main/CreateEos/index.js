@@ -42,7 +42,7 @@ export default class CreateEos extends Component {
             accountName: Utils.generateEosAccount()
         })
     }
- 
+
     clickCreate = async () => {
         this.setState({
             loading: true
@@ -52,12 +52,12 @@ export default class CreateEos extends Component {
 
         if (!accountName) {
             this.setState({ error: "Account name not blank", loading: false })
-            return 
-        } 
+            return
+        }
         if (accountName.length != 12) {
             this.setState({ error: "Account name must be 12 characters", loading: false })
             return
-        } 
+        }
 
         var data = option.find(x => x.value === defaultValue);
 
@@ -69,34 +69,37 @@ export default class CreateEos extends Component {
                 payment
             });
         } else {
-            try {
-                var checkEosAccount = await WalletService.checkEosAccount(accountName);
+            setTimeout(async () => {
+                try {
+                    var checkEosAccount = await WalletService.checkEosAccount(accountName);
 
-                if (checkEosAccount) {
-                    
-                    WalletService.createEosAccount(data.label,accountName, async (error) => {
-                        if(error) {
-                            this.setState({
-                                error: error.message ? error.message : error,
-                                loading: false
-                            })
-                            return;
-                        }
-            
-                        await WalletService.getAllAccountInfo();
-                        WalletService.startPool();
+                    if (checkEosAccount) {
 
-                        this.props.navigation.navigate('CoinDetail', {
-                            index
-                        });
+                        WalletService.createEosAccount(data.label, accountName, async (error) => {
+                            if (error) {
+                                this.setState({
+                                    error: error.message ? error.message : error,
+                                    loading: false
+                                })
+                                return;
+                            }
+
+                            await WalletService.getAllAccountInfo();
+                            WalletService.startPool();
+
+                            this.props.navigation.navigate('CoinDetail', {
+                                index
+                            });
+                        })
+                    }
+                } catch (error) {
+                    this.setState({
+                        error: error.message,
+                        loading: false
                     })
                 }
-            } catch (error) {
-                this.setState({
-                    error: error.message,
-                    loading: false
-                })
-            }
+            }, 1000);
+
         }
     }
 

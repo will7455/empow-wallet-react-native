@@ -54,20 +54,21 @@ class Send extends Component {
         const accountInfo = this.props.accountInfo[index];
 
         const data = { to: sendTo, value: sendAmount, memo: sendMemo, coinInfo: accountInfo }
-        const result = await WalletService.send(data);
-
-        if (result.error) {
-            this.setState({
-                error: result.error,
-                loading: false
-            })
-        } else {
-            this.setState({
-                loading: false,
-                modalVisible: true,
-                sendSuccess: result.txid ? result.txid : 'Send Transaction successfully',
-            })
-        }
+        setTimeout( async () => {
+            const result = await WalletService.send(data);
+            if (result.error) {
+                this.setState({
+                    error: result.error,
+                    loading: false
+                })
+            } else {
+                this.setState({
+                    loading: false,
+                    modalVisible: true,
+                    sendSuccess: result.txid ? result.txid : 'Send Transaction successfully',
+                })
+            }
+        }, 1000);
     }
 
     setModalVisible() {

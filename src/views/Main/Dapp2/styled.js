@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 
     waperHeader: {
         width: '100%',
-        height: 190,
+        height: screenHeight/3,
         resizeMode: 'cover',
         justifyContent: 'center'
     },
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     },
 
     waperListCoin: {
-        height: screenHeight/2
+        height: screenHeight/2,
     },
 
     coin: {
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#534e73',
         paddingTop: 8,
         paddingBottom: 15,
-        zIndex: 2
+        zIndex: 10
     },
     childConnect: {
         flexDirection: 'row',

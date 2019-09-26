@@ -28,6 +28,7 @@ import Dapp2Screen from './Dapp2'
 import SignInScreen from './SignIn'
 import SignUpScreen from './SignUp'
 import ForgotPasswordScreen from './ForgotPassword'
+import ConnectScreen from './Connect'
 
 const MainNavigation = createStackNavigator({
 	Home: HomeScreen,
@@ -53,10 +54,12 @@ const MainNavigation = createStackNavigator({
 	Dapp2: Dapp2Screen,
 	SignIn: SignInScreen,
 	SignUp: SignUpScreen,
-	ForgotPassword: ForgotPasswordScreen
+	ForgotPassword: ForgotPasswordScreen,
+	Connect: ConnectScreen
 }, {
 	initialRouteName: 'Home',
-	headerMode: 'none',
+	headerMode: 'none'
 })
+
 
 export default MainNavigation

@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 
     waperHeader: {
         width: '100%',
-        height: 190,
+        height: screenHeight/3,
         resizeMode: 'cover',
         justifyContent: 'center'
     },

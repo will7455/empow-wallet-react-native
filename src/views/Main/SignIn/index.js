@@ -5,7 +5,8 @@ import {
     ImageBackground,
     TouchableOpacity,
     TextInput,
-    Dimensions
+    Dimensions,
+    ActivityIndicator
 } from 'react-native'
 import BG from '../../../assets/images/bg-loading.png'
 import ShowPass from '../../../assets/images/show-pass.svg'
@@ -28,15 +29,20 @@ class SignIn extends Component {
         this.state = {
             isShowPass: false,
             error: false,
-            loading: false
+            loading: false,
+            loadingScreen: true
         }
     }
 
-    componentDidMount() {
-       // FirebaseService.logout();
-       console.log(FirebaseService)
+    componentWillMount () {
+        // FirebaseService.logout();
+        console.log(FirebaseService)
         if (FirebaseService.user) {
             this.props.navigation.navigate('Dapp2');
+        } else {
+            this.setState({
+                loadingScreen: false
+            })
         }
     }
 
@@ -91,7 +97,7 @@ class SignIn extends Component {
 
     }
 
-    render() {
+    renderSignIn() {
         return (
             <ImageBackground source={BG} style={Styles.waperContainer}>
                 <Text style={[Styles.textGarener, { fontSize: 14, fontWeight: 'bold', marginBottom: 20 }]}>Login to get EMPOW Token free</Text>
@@ -133,6 +139,21 @@ class SignIn extends Component {
                 <Menu navigation={this.props.navigation}></Menu>
             </ImageBackground>
         )
+    }
+
+    renderLoading() {
+        return (
+            <View style={{backgroundColor: '#534e73', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%'}}>
+                <ActivityIndicator color='white'></ActivityIndicator>
+            </View>
+        )
+    }
+
+    render() {
+        if (this.state.loadingScreen) {
+            return this.renderLoading();
+        }
+        return this.renderSignIn()
     }
 }
 

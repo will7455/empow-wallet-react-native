@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="36" height="36" viewBox="0 0 36 36">
   <defs>
-    <linearGradient id="linear-gradient" x1="0" y1="0" x2="30" y2="30" gradientUnits="objectBoundingBox">
+    <linearGradient id="linear-gradient" x1="0.016" y1="0.016" x2="1" y2="1" gradientUnits="objectBoundingBox">
       <stop offset="0" stop-color="#fd65a7"/>
       <stop offset="1" stop-color="#962a9f"/>
     </linearGradient>
   </defs>
   <g id="Group_2" data-name="Group 2" transform="translate(-32.176 -114.054)">
-    <rect id="Rectangle_2159" data-name="Rectangle 2159" width="36" height="36" rx="8" transform="translate(32.176 114.054)" fill="url(#linear-gradient)"/>
+    <rect id="Rectangle_2159" data-name="Rectangle 2159" width="36" height="36" rx="18" transform="translate(32.176 114.054)" fill="url(#linear-gradient)"/>
     <g id="Canvas" transform="translate(41 124.547)">
       <g id="xrp-symbol-black">
         <path id="Vector" d="M15.672,0h2.661L12.8,5.48a5.171,5.171,0,0,1-7.259,0L0,0H2.661L6.868,4.163a3.275,3.275,0,0,0,4.6,0Z" transform="translate(0.034)" fill="#fff"/>

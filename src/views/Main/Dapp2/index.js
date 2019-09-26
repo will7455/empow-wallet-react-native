@@ -6,35 +6,31 @@ import {
     TouchableOpacity,
     FlatList,
     ActivityIndicator,
-    Linking
+    Linking,
+    Image
 } from 'react-native'
 import Styles from './styled'
 import BgHeader from '../../../assets/images/header-home-bg.png'
 import LinearGradient from 'react-native-linear-gradient'
 import Menu from '../../../components/Menu'
-import CoinIcon from '../../../components/CoinIcon'
 import { connect } from 'react-redux';
 import ServerAPI from '../../../ServerAPI'
-import WalletService from '../../../services/WalletService'
 import FirebaseService from '../../../services/FirebaseService'
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
-import CircleCheckBox, { LABEL_POSITION } from 'react-native-circle-checkbox'
 import PopupWithdraw from '../../../components/PopupWithdraw'
+import IconRefresh from '../../../assets/images/icon-restore.svg'
+import { API_ENDPOINT } from '../../../constants/index'
+
 class Dapp2 extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showListConnect: false,
-            route: null,
             point: 'loading',
             listDApp: [],
-            addressSelected: '',
             spinValue: 0,
-            connectLoading: true,
             isLoading: false,
             success: false,
             error: false,
-            tronReady: false,
             connect_tron: false,
             connect_ethereum: false,
             modalVisible: false,
@@ -42,13 +38,6 @@ class Dapp2 extends Component {
     }
 
     async componentDidMount() {
-        this.getLeftConnectInfo('tron')
-        this.getLeftConnectInfo('ethereum', () => {
-            this.setState({
-                connectLoading: false
-            })
-        })
-
         const idToken = await FirebaseService.getIdToken();
         this.setState({
             idToken
@@ -67,13 +56,15 @@ class Dapp2 extends Component {
         })
     }
 
-    getLeftConnectInfo(type, callback = false) {
-        WalletService.getLeftConnectInfo(type, connectInfo => {
-            this.setState({
-                [`connect_${type}`]: connectInfo
-            })
+    refreshBalance = () => {
+        this.setState({
+            point: 'loading'
+        })
 
-            if (callback) callback()
+        ServerAPI.getUserPoint(this.state.idToken).then(point => {
+            this.setState({
+                point
+            })
         })
     }
 
@@ -101,50 +92,13 @@ class Dapp2 extends Component {
         }, 50)
     }
 
-    connect = (type) => {
 
-        this.setState({
-            connectLoading: true,
-            showListConnect: false
-        })
-
-        if (type === 'tron') {
-            this.setState({
-                connect_tron: !this.state.connect_tron
-            })
-        }
-
-        if (type === 'ethereum') {
-            this.setState({
-                connect_ethereum: !this.state.connect_ethereum
-            })
-        }
-
-        WalletService.spin(type, (error, point) => {
-            if (error) {
-                this.setState({
-                    connectLoading: false,
-                    error
-                })
-                return;
-            } else {
-                // this.popupResponse(messageUUID, point)
-            }
-        })
-
-        let interval = setInterval(() => {
-            ServerAPI.getUserPoint(this.state.idToken).then(point => {
-                if (this.state.point != point) {
-                    clearInterval(interval)
-                    this.spin(point - this.state.point, point)
-                    this.getLeftConnectInfo(type, () => {
-                        this.setState({
-                            connectLoading: false
-                        })
-                    })
-                }
-            })
-        }, 5000)
+    onConnect = () => {
+        this.props.navigation.navigate('Connect', {
+            point: this.state.point,
+            idToken: this.state.idToken,
+            spin: this.spin
+        });
     }
 
     onWithdraw = async () => {
@@ -201,15 +155,15 @@ class Dapp2 extends Component {
 
     renderItem = ({ item, index }) => {
 
-        var Logo = CoinIcon['logo_888'];
-
         return (
             <TouchableOpacity onPress={() => this.clickDapp(item.website)}>
                 <LinearGradient style={Styles.coin}
                     colors={['#46527e', '#383c6e', '#1b1464']}
                     start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
                     <View style={{ flex: 0.2 }}>
-                        <Logo></Logo>
+                        {/* <Logo></Logo> */}
+                        <Image source={{ uri: `${API_ENDPOINT}/image/${item.logo_url}` }}
+                            style={{ width: 50, height: 50 }}></Image>
                     </View>
                     <View style={{ flex: 0.7 }}>
                         <Text style={[Styles.textGarener, { fontSize: 14 }]}>{item.fullname.length <= 24 ? item.fullname : item.fullname.substring(0, 24) + '...'}</Text>
@@ -246,36 +200,20 @@ class Dapp2 extends Component {
         )
     }
 
-
     render() {
-
-        const { connect_tron, connect_ethereum } = this.state
-
-        // const now = new Date().getTime()
-
-        // const countdownSpan = ({ hours, minutes, seconds }) => {
-        //     return (<span className="countdown">{hours}:{minutes}:{seconds}</span>)
-        // }
-
-        // let nextSpinTimeTron = 0
-
-        // if (connect_tron) {
-        //     nextSpinTimeTron = connect_tron.nextSpinTime * 1000
-        // }
-
-        // let nextSpinTimeEthereum = 0;
-
-        // if (connect_ethereum) {
-        //     nextSpinTimeEthereum = connect_ethereum.nextSpinTime * 1000
-        // }
-
         return (
             <View style={Styles.waperContainer}>
                 <ImageBackground source={BgHeader} style={Styles.waperHeader}>
                     <View style={[Styles.container, { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }]}>
                         <View style={Styles.waperTitle}>
                             <Text style={[Styles.textGarener, { fontSize: 17 }]}>Total token mined</Text>
-                            {this.state.point !== "loading" && <Text style={[Styles.textGarener, { fontSize: 17 }]}>{this.state.point} EM</Text>}
+                            {this.state.point !== "loading" &&
+                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <Text style={[Styles.textGarener, { fontSize: 20, marginRight: 5 }]}>{this.state.point} EM</Text>
+                                    <TouchableOpacity onPress={this.refreshBalance}>
+                                        <IconRefresh fill="white"></IconRefresh>
+                                    </TouchableOpacity>
+                                </View>}
                             {this.state.point === "loading" && <View>
                                 <ActivityIndicator color='white'></ActivityIndicator>
                             </View>}
@@ -304,50 +242,8 @@ class Dapp2 extends Component {
                             <Text style={[Styles.textGarener, { fontSize: 13 }]}>Withdraw</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={{ position: 'relative' }}>
-                            <TouchableOpacity style={[Styles.button, this.state.showListConnect ? Styles.showListConnect : '']} onPress={() => this.setState({ showListConnect: !this.state.showListConnect })}>
-                                <Text style={[Styles.textGarener, { fontSize: 13 }]}>Connect</Text>
-                            </TouchableOpacity>
-
-                            {this.state.showListConnect && <View style={Styles.waperConnect}>
-                                <View style={Styles.childConnect}>
-                                    <Text style={[Styles.textGarener, { fontSize: 13 }]}>TRX</Text>
-                                    <CircleCheckBox
-                                        checked={connect_tron}
-                                        // onToggle={() => this.connect('tron')}
-                                        labelPosition={LABEL_POSITION.RIGHT}
-                                        outerSize={14}
-                                        innerSize={10}
-                                        outerColor='white'
-                                        innerColor='#EE4F5F'
-                                    />
-                                </View>
-
-                                <View style={Styles.childConnect}>
-                                    <Text style={[Styles.textGarener, { fontSize: 13 }]}>ETH</Text>
-                                    <CircleCheckBox
-                                        checked={connect_ethereum}
-                                        // onToggle={() => this.connect('ethereum')}
-                                        labelPosition={LABEL_POSITION.RIGHT}
-                                        outerSize={14}
-                                        innerSize={10}
-                                        outerColor='white'
-                                        innerColor='#EE4F5F'
-                                    />
-                                </View>
-
-                                <View style={Styles.childConnect}>
-                                    <Text style={[Styles.textGarener, { fontSize: 13 }]}>EOS</Text>
-                                    <CircleCheckBox
-                                        checked={false}
-                                        labelPosition={LABEL_POSITION.RIGHT}
-                                        outerSize={14}
-                                        innerSize={10}
-                                        outerColor='white'
-                                        innerColor='#EE4F5F'
-                                    />
-                                </View>
-                            </View>}
+                        <TouchableOpacity style={[Styles.button]} onPress={() => this.onConnect()}>
+                            <Text style={[Styles.textGarener, { fontSize: 13 }]}>Connect</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

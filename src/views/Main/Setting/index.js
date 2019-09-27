@@ -4,6 +4,7 @@ import {
     Text,
     TouchableOpacity,
     FlatList,
+    Linking
 } from 'react-native'
 import Styles from './styled'
 import Language from '../../../assets/images/icon-language.svg'
@@ -19,6 +20,7 @@ import Arrow from '../../../assets/images/arrow-right.svg'
 import Menu from '../../../components/Menu'
 import IconCirkle from '../../../components/IconCirkle'
 import Button from '../../../components/Button'
+import Contact from '../../../assets/images/icon-conntact.svg'
 
 export default class Search extends Component {
 
@@ -28,82 +30,86 @@ export default class Search extends Component {
             data: [
                 {
                     name: 'Language',
-                    logo: Language
+                    logo: Language,
+                    route: 'Language'
                 },
                 {
                     name: 'Currency',
-                    logo: Currency
+                    logo: Currency,
+                    route: 'Currency'
                 },
                 {
                     name: 'Change network',
-                    logo: SwitchNote
+                    logo: SwitchNote,
+                    route: 'SwitchNote'
                 },
                 {
                     name: 'Export account',
-                    logo: ExportAccount
+                    logo: ExportAccount,
+                    route: 'UnlockAccount'
                 },
                 {
                     name: 'Change passwork',
-                    logo: ChangePasswork
+                    logo: ChangePasswork,
+                    route: 'ChangePassword'
                 },
                 {
                     name: 'Introduce',
-                    logo: Introduce
+                    logo: Introduce,
+                    route: 'Introduce'
                 },
                 {
-                    name: 'Feedback',
-                    logo: Feedback
+                    name: 'Contact us',
+                    logo: Contact,
+                    route: 'ContactUs'
                 },
                 {
                     name: 'Rate app',
-                    logo: RateApp
+                    logo: RateApp,
+                    route: 'RateApp'
                 },
-
                 {
                     name: 'Term of service',
-                    logo: TermOfService
+                    logo: TermOfService,
+                    route: 'TermOfService'
+                },
+                {
+                    name: 'TRX wallet connected',
+                    logo: TermOfService,
+                    route: 'Wallet'
+                },
+                {
+                    name: 'Change Password Left',
+                    logo: TermOfService,
+                    route: 'ChangePasswordLeft'
+                },
+                {
+                    name: 'Withdraw history',
+                    logo: TermOfService,
+                    route: 'TermOfService'
                 }
             ],
             loading: false
         }
     }
 
-    onPress = (index) => {
-        if (index === 0) {
-            this.props.navigation.navigate('Language');
+    onPress = (route) => {
+
+        if (!route) {
+            this.props.navigation.navigate('Home');
+            return;
         }
 
-        if (index === 1) {
-            this.props.navigation.navigate('Currency');
+        if (route === 'RateApp') {
+            const link = 'http://play.google.com/store/apps/details?id=com.google.android.apps.maps'
+            Linking.canOpenURL(link).then(supported => {
+                supported && Linking.openURL(link);
+            }, (err) => console.log(err));
+
+            return;
         }
 
-        if (index === 2) {
-            this.props.navigation.navigate('SwitchNote');
-        }
-
-        if (index === 3) {
-            this.props.navigation.navigate('UnlockAccount');
-        }
-
-        if (index === 4) {
-            this.props.navigation.navigate('ChangePassword');
-        }
-
-        if (index === 5) {
-            // this.props.navigation.navigate('Introduce');
-        }
-
-        if (index === 6) {
-            // this.props.navigation.navigate('Feedback');
-        }
-
-        if (index === 7) {
-            // this.props.navigation.navigate('RateApp');
-        }
-
-        if (index === 8) {
-            // this.props.navigation.navigate('TermOfService');
-        }
+        this.props.navigation.navigate(route);
     }
 
     clickLogout = () => {
@@ -118,11 +124,11 @@ export default class Search extends Component {
 
     renderItem = ({ item, index }) => {
         return (
-            <TouchableOpacity style={Styles.container} onPress={()=>this.onPress(index)}>
+            <TouchableOpacity style={Styles.container} onPress={() => this.onPress(item.route)}>
                 <View style={Styles.child}>
-                    <View style={{flexDirection:'row'}}>
+                    <View style={{ flexDirection: 'row' }}>
                         <IconCirkle width={24} IconSource={item.logo}></IconCirkle>
-                        <View style={{marginLeft: 10}}>
+                        <View style={{ marginLeft: 10 }}>
                             <Text style={Styles.textGarener}>{item.name}</Text>
                         </View>
                     </View>

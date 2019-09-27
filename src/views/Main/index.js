@@ -29,6 +29,11 @@ import SignInScreen from './SignIn'
 import SignUpScreen from './SignUp'
 import ForgotPasswordScreen from './ForgotPassword'
 import ConnectScreen from './Connect'
+import IntroduceScreen from './Introduce'
+import TermOfServiceScreen from './TermOfService'
+import ContactUsScreen from './ContactUs'
+import WalletScreen from './Wallet'
+import ChangePasswordLeftScreen from './ChangePasswordLeft'
 
 const MainNavigation = createStackNavigator({
 	Home: HomeScreen,
@@ -55,7 +60,12 @@ const MainNavigation = createStackNavigator({
 	SignIn: SignInScreen,
 	SignUp: SignUpScreen,
 	ForgotPassword: ForgotPasswordScreen,
-	Connect: ConnectScreen
+	Connect: ConnectScreen,
+	Introduce: IntroduceScreen,
+	TermOfService: TermOfServiceScreen,
+	ContactUs: ContactUsScreen,
+	Wallet: WalletScreen,
+	ChangePasswordLeft: ChangePasswordLeftScreen
 }, {
 	initialRouteName: 'Home',
 	headerMode: 'none'

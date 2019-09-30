@@ -7,65 +7,34 @@ import {
     Linking
 } from 'react-native'
 import Styles from './styled'
-import Language from '../../../assets/images/icon-language.svg'
-import Currency from '../../../assets/images/icon-currency.svg'
-import SwitchNote from '../../../assets/images/icon-switch-note.svg'
-import ExportAccount from '../../../assets/images/icon-export-account.svg'
-import ChangePasswork from '../../../assets/images/icon-change-password.svg'
-import Introduce from '../../../assets/images/icon-introduce.svg'
-import RateApp from '../../../assets/images/icon-rate-app.svg'
 import TermOfService from '../../../assets/images/icon-term-of-service.svg'
 import Arrow from '../../../assets/images/arrow-right.svg'
 import Menu from '../../../components/Menu'
 import IconCirkle from '../../../components/IconCirkle'
 import Button from '../../../components/Button'
-import Contact from '../../../assets/images/icon-conntact.svg'
+import ChangePasswork from '../../../assets/images/icon-change-password.svg'
+import FirebaseService from '../../../services/FirebaseService'
 
-export default class Search extends Component {
+export default class SettingLeft extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             data: [
                 {
-                    name: 'Language',
-                    logo: Language,
-                    route: 'Language'
+                    name: 'TRX wallet connected',
+                    logo: TermOfService,
+                    route: 'Wallet'
                 },
                 {
-                    name: 'Currency',
-                    logo: Currency,
-                    route: 'Currency'
-                },
-                {
-                    name: 'Change network',
-                    logo: SwitchNote,
-                    route: 'SwitchNote'
-                },
-                {
-                    name: 'Export account',
-                    logo: ExportAccount,
-                    route: 'UnlockAccount'
-                },
-                {
-                    name: 'Change passwork',
+                    name: 'Change Password',
                     logo: ChangePasswork,
-                    route: 'ChangePassword'
+                    route: 'ChangePasswordLeft'
                 },
                 {
-                    name: 'Introduce',
-                    logo: Introduce,
-                    route: 'Introduce'
-                },
-                {
-                    name: 'Contact us',
-                    logo: Contact,
-                    route: 'ContactUs'
-                },
-                {
-                    name: 'Rate app',
-                    logo: RateApp,
-                    route: 'RateApp'
+                    name: 'Withdraw history',
+                    logo: TermOfService,
+                    route: 'WithdrawHistory'
                 },
                 {
                     name: 'Term of service',
@@ -84,11 +53,15 @@ export default class Search extends Component {
             return;
         }
 
-        if (route === 'RateApp') {
-            const link = 'http://play.google.com/store/apps/details?id=com.google.android.apps.maps'
-            Linking.canOpenURL(link).then(supported => {
-                supported && Linking.openURL(link);
-            }, (err) => console.log(err));
+        if (route === 'TermOfService') {
+            const website = 'https://empow.io/termsofservice'
+            Linking.canOpenURL(website).then(supported => {
+                if (supported) {
+                    Linking.openURL(website);
+                } else {
+                    console.log("Don't know how to open URI: " + website);
+                }
+            });
 
             return;
         }
@@ -96,14 +69,21 @@ export default class Search extends Component {
         this.props.navigation.navigate(route);
     }
 
-    clickLogout = () => {
-        this.setState({
-            loading: true
-        })
+    clickLogout = async () => {
+        // this.setState({
+        //     loading: true
+        // })
 
-        setTimeout(() => {
-            this.props.navigation.navigate('Unlock');
-        }, 1000);
+        // setTimeout(() => {
+        //     FirebaseService.logout();
+        //     this.props.navigation.navigate('SignIn')
+        // }, 1000);
+        // FirebaseService.logout(() => {
+        //     this.props.navigation.navigate('SignIn')
+        // });
+
+        await FirebaseService.logout();
+        this.props.navigation.navigate('SignIn')
     }
 
     renderItem = ({ item, index }) => {

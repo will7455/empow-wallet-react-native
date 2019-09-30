@@ -19,20 +19,41 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins-Black',
     },
 
-    waperList: {
-        width:'100%',
-        backgroundColor: '#534e73',
+    waperHeader: {
+        flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 20,
+        marginBottom: 30,
     },
 
-    child: {
-        borderBottomWidth: 1,
-        borderBottomColor: '#3C3854',
+    text1: {
+        fontSize: 15,
+    },
+
+    text2: {
+        fontSize: 13,
+        color: '#8f90a2'
+    },
+
+    waperInfo: {
+        width: '100%',
+        height: screenHeight / 5,
+        borderRadius: 12,
+        backgroundColor: '#44405f',
+        elevation: 4,
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 15
+    },
+
+    waperList: {
+        height: screenHeight / 2
+    },
+
+    waperItem: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingTop: 10,
+        paddingTop: 10, 
         paddingBottom: 10
     }
 });

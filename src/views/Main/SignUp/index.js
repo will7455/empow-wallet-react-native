@@ -15,8 +15,6 @@ import Button from '../../../components/Button'
 import { connect } from 'react-redux'
 import Back from '../../../components/Back'
 import Menu from '../../../components/Menu'
-import StorageService from '../../../services/StorageService'
-import ServerAPI from '../../../ServerAPI'
 import FirebaseService from '../../../services/FirebaseService'
 
 class SignUp extends Component {
@@ -28,7 +26,7 @@ class SignUp extends Component {
             isShowPassRepeat: false,
             checked: true,
             error: false,
-            loading: false
+            loading: false,
         }
     }
 

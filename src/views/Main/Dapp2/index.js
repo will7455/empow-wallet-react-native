@@ -20,6 +20,7 @@ import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import PopupWithdraw from '../../../components/PopupWithdraw'
 import IconRefresh from '../../../assets/images/icon-restore.svg'
 import { API_ENDPOINT } from '../../../constants/index'
+import Setting from '../../../assets/images/icon-setting.svg'
 
 class Dapp2 extends Component {
     constructor(props) {
@@ -147,6 +148,10 @@ class Dapp2 extends Component {
         });
     }
 
+    clickSetting = () => {
+        this.props.navigation.navigate('SettingLeft');
+    }
+
     setModalVisible() {
         this.setState({
             modalVisible: !this.state.modalVisible
@@ -204,6 +209,11 @@ class Dapp2 extends Component {
         return (
             <View style={Styles.waperContainer}>
                 <ImageBackground source={BgHeader} style={Styles.waperHeader}>
+                    <View style={{ width: '100%', alignItems: 'flex-end', top: -30, paddingRight: 10 }}>
+                        <TouchableOpacity onPress={this.clickSetting}>
+                            <Setting fill='white'></Setting>
+                        </TouchableOpacity>
+                    </View>
                     <View style={[Styles.container, { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }]}>
                         <View style={Styles.waperTitle}>
                             <Text style={[Styles.textGarener, { fontSize: 17 }]}>Total token mined</Text>

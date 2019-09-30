@@ -11,6 +11,7 @@ import HomeSelected from '../assets/images/icon-home-selected.svg'
 export default props => {
     const { navigation, onPress, btnStyle, txtStyle } = props
     var routeName = navigation && navigation.state && navigation.state.routeName ? navigation.state.routeName : ''
+    var isDapp = routeName === 'SignIn' || routeName === 'ForgotPassword' || routeName === 'SignUp' || routeName === 'Dapp2' || routeName === 'SettingLeft';
     return (
         <View style={styles.waperMenu}>
             {routeName !== 'Home' && <TouchableOpacity style={styles.default} onPress={() => { navigation.navigate('Home') }}>
@@ -21,11 +22,11 @@ export default props => {
                 <WalletSeleted></WalletSeleted>
             </TouchableOpacity>}
 
-            {(routeName !== 'SignIn' && routeName !== 'ForgotPassword' && routeName !== 'SignUp' && routeName !== 'Dapp2') && <TouchableOpacity style={[styles.default, styles.selected]} onPress={() => { navigation.navigate('SignIn') }}>
+            {!isDapp && <TouchableOpacity style={[styles.default, styles.selected]} onPress={() => { navigation.navigate('SignIn') }}>
                 <Home></Home>
             </TouchableOpacity>}
 
-            {(routeName === 'SignIn' || routeName === 'ForgotPassword' || routeName === 'SignUp' || routeName === 'Dapp2') && <TouchableOpacity style={[styles.default, styles.selected]} onPress={() => { navigation.navigate('SignIn') }}>
+            {isDapp && <TouchableOpacity style={[styles.default, styles.selected]} onPress={() => { navigation.navigate('SignIn') }}>
                 <HomeSelected></HomeSelected>
             </TouchableOpacity>}
 

@@ -34,6 +34,8 @@ import TermOfServiceScreen from './TermOfService'
 import ContactUsScreen from './ContactUs'
 import WalletScreen from './Wallet'
 import ChangePasswordLeftScreen from './ChangePasswordLeft'
+import SettingLeftScreen from './SettingLeft'
+import WithdrawHistoryScreen from './WithdrawHistory'
 
 const MainNavigation = createStackNavigator({
 	Home: HomeScreen,
@@ -65,7 +67,9 @@ const MainNavigation = createStackNavigator({
 	TermOfService: TermOfServiceScreen,
 	ContactUs: ContactUsScreen,
 	Wallet: WalletScreen,
-	ChangePasswordLeft: ChangePasswordLeftScreen
+	ChangePasswordLeft: ChangePasswordLeftScreen,
+	SettingLeft: SettingLeftScreen,
+	WithdrawHistory: WithdrawHistoryScreen
 }, {
 	initialRouteName: 'Home',
 	headerMode: 'none'

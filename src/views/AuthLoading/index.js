@@ -26,7 +26,6 @@ class AuthLoading extends Component {
 	};
 
 	async loginCallback(user) {
-		console.log(user)
         if(user) {
 			FirebaseService.isLoggedIn = true
             FirebaseService.user = user

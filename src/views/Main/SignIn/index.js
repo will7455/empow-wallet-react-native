@@ -34,16 +34,32 @@ class SignIn extends Component {
         }
     }
 
-    componentWillMount () {
-        // FirebaseService.logout();
-        console.log(FirebaseService)
+    componentWillMount() {
+
         if (FirebaseService.user) {
             this.props.navigation.navigate('Dapp2');
         } else {
             this.setState({
-                loadingScreen: false
+                loadingScreen: false,
+            })
+
+            this.focusListener = this.props.navigation.addListener('didFocus', () => {
+                this.onFocusFunction()
             })
         }
+    }
+
+    componentWillUnmount() {
+        this.focusListener.remove()
+    }
+
+    onFocusFunction = () => {
+        // do some stuff on every screen focus
+        this.setState({
+            loading: false,
+            email: '',
+            password: ''
+        })
     }
 
     togglePass = () => {
@@ -108,15 +124,14 @@ class SignIn extends Component {
                 <View style={Styles.waperInput}>
                     <Text style={[Styles.textGarener, Styles.text]}>Email</Text>
                     <View style={{ marginLeft: -20 }}>
-                        <TextInput style={[Styles.textGarener, Styles.input]} onChangeText={(text) => this.onChangeText(text, 1)}></TextInput>
+                        <TextInput defaultValue={this.state.email} style={[Styles.textGarener, Styles.input]} onChangeText={(text) => this.onChangeText(text, 1)}></TextInput>
                     </View>
                 </View>
-
 
                 <View style={Styles.waperInput}>
                     <Text style={[Styles.textGarener, Styles.text]}>Password</Text>
                     <View style={{ marginLeft: -20, flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <TextInput secureTextEntry={!this.state.isShowPass} style={[Styles.textGarener, Styles.input]} onChangeText={(text) => this.onChangeText(text, 2)}></TextInput>
+                        <TextInput defaultValue={this.state.password} secureTextEntry={!this.state.isShowPass} style={[Styles.textGarener, Styles.input]} onChangeText={(text) => this.onChangeText(text, 2)}></TextInput>
                         {this.state.isShowPass && <TouchableOpacity onPress={() => this.togglePass()}>
                             <HidePass style={Styles.iconPass} ></HidePass>
                         </TouchableOpacity>}
@@ -143,7 +158,7 @@ class SignIn extends Component {
 
     renderLoading() {
         return (
-            <View style={{backgroundColor: '#534e73', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%'}}>
+            <View style={{ backgroundColor: '#534e73', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}>
                 <ActivityIndicator color='white'></ActivityIndicator>
                 <Menu navigation={this.props.navigation}></Menu>
             </View>

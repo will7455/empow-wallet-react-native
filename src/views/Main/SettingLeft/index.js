@@ -14,6 +14,7 @@ import IconCirkle from '../../../components/IconCirkle'
 import Button from '../../../components/Button'
 import ChangePasswork from '../../../assets/images/icon-change-password.svg'
 import FirebaseService from '../../../services/FirebaseService'
+import Back from '../../../components/Back'
 
 export default class SettingLeft extends Component {
 
@@ -70,18 +71,6 @@ export default class SettingLeft extends Component {
     }
 
     clickLogout = async () => {
-        // this.setState({
-        //     loading: true
-        // })
-
-        // setTimeout(() => {
-        //     FirebaseService.logout();
-        //     this.props.navigation.navigate('SignIn')
-        // }, 1000);
-        // FirebaseService.logout(() => {
-        //     this.props.navigation.navigate('SignIn')
-        // });
-
         await FirebaseService.logout();
         this.props.navigation.navigate('SignIn')
     }
@@ -109,6 +98,11 @@ export default class SettingLeft extends Component {
     render() {
         return (
             <View style={Styles.waperContainer}>
+                <View style={Styles.waperHeader}>
+                    <Back navigation={this.props.navigation}></Back>
+                    <Text style={[Styles.textGarener, { marginLeft: 20 }]}>Setting</Text>
+                </View>
+
                 <View style={Styles.waperList}>
                     <FlatList
                         data={this.state.data}

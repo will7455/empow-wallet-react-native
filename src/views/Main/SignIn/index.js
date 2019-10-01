@@ -35,22 +35,23 @@ class SignIn extends Component {
     }
 
     componentWillMount() {
-
         if (FirebaseService.user) {
             this.props.navigation.navigate('Dapp2');
         } else {
             this.setState({
                 loadingScreen: false,
             })
-
-            this.focusListener = this.props.navigation.addListener('didFocus', () => {
-                this.onFocusFunction()
-            })
         }
+
+        this.focusListener = this.props.navigation.addListener('didFocus', () => {
+            this.onFocusFunction()
+        })
     }
 
     componentWillUnmount() {
-        this.focusListener.remove()
+        if (this.focusListener) {
+            this.focusListener.remove()
+        }
     }
 
     onFocusFunction = () => {
@@ -166,6 +167,10 @@ class SignIn extends Component {
     }
 
     render() {
+        if (FirebaseService.user) {
+            this.props.navigation.navigate('Dapp2');
+        }
+
         if (this.state.loadingScreen) {
             return this.renderLoading();
         }

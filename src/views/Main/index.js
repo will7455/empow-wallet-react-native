@@ -36,6 +36,7 @@ import WalletScreen from './Wallet'
 import ChangePasswordLeftScreen from './ChangePasswordLeft'
 import SettingLeftScreen from './SettingLeft'
 import WithdrawHistoryScreen from './WithdrawHistory'
+import SignTransactionScreen from './SignTransaction'
 
 const MainNavigation = createStackNavigator({
 	Home: HomeScreen,
@@ -69,7 +70,8 @@ const MainNavigation = createStackNavigator({
 	Wallet: WalletScreen,
 	ChangePasswordLeft: ChangePasswordLeftScreen,
 	SettingLeft: SettingLeftScreen,
-	WithdrawHistory: WithdrawHistoryScreen
+	WithdrawHistory: WithdrawHistoryScreen,
+	SignTransaction: SignTransactionScreen
 }, {
 	initialRouteName: 'Home',
 	headerMode: 'none'

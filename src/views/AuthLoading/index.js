@@ -31,6 +31,7 @@ class AuthLoading extends Component {
             FirebaseService.user = user
         } else {
 			FirebaseService.isLoggedIn = false
+			FirebaseService.user = null
 		}
 
 		if(!user) return;

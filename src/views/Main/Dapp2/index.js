@@ -159,14 +159,12 @@ class Dapp2 extends Component {
     }
 
     renderItem = ({ item, index }) => {
-
         return (
             <TouchableOpacity onPress={() => this.clickDapp(item.website)}>
                 <LinearGradient style={Styles.coin}
                     colors={['#46527e', '#383c6e', '#1b1464']}
                     start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
                     <View style={{ flex: 0.2 }}>
-                        {/* <Logo></Logo> */}
                         <Image source={{ uri: `${API_ENDPOINT}/image/${item.logo_url}` }}
                             style={{ width: 50, height: 50 }}></Image>
                     </View>
@@ -193,6 +191,7 @@ class Dapp2 extends Component {
                         renderItem={this.renderItem}
                         showsVerticalScrollIndicator={true}
                         extraData={this.state}
+                        keyExtractor={(item, index) => index.toString()}
                     />
                 </View>
             </View>

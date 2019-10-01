@@ -6,7 +6,6 @@ const styles = StyleSheet.create({
     waperContainer: {
         width: '100%',
         height: '100%',
-        alignItems: 'center',
         backgroundColor: '#3C3854'
     },
 
@@ -34,7 +33,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingTop: 10,
         paddingBottom: 10
-    }
+    },
+
+    waperHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 50,
+    },
+
 });
 
 export default styles;

@@ -24,17 +24,16 @@ const styles = StyleSheet.create({
     waperHeader: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 50,
+        marginBottom: 20,
+    },
+
+    waperList: {
+        width: '100%',
+        height: screenHeight - 120,
     },
 
     child: {
-        borderBottomWidth: 1,
-        borderBottomColor: '#534e73',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingTop: 10,
-        paddingBottom: 10
+        marginBottom: 10
     }
 });
 

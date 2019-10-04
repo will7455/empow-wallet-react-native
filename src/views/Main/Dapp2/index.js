@@ -139,14 +139,6 @@ class Dapp2 extends Component {
     }
 
     clickDapp = (website) => {
-        // Linking.canOpenURL(website).then(supported => {
-        //     if (supported) {
-        //         Linking.openURL(website);
-        //     } else {
-        //         console.log("Don't know how to open URI: " + website);
-        //     }
-        // });
-
         this.props.navigation.navigate('WebView', {
             link: website
         })

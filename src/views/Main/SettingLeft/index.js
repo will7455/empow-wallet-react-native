@@ -54,19 +54,6 @@ export default class SettingLeft extends Component {
             return;
         }
 
-        if (route === 'TermOfService') {
-            const website = 'https://empow.io/termsofservice'
-            Linking.canOpenURL(website).then(supported => {
-                if (supported) {
-                    Linking.openURL(website);
-                } else {
-                    console.log("Don't know how to open URI: " + website);
-                }
-            });
-
-            return;
-        }
-
         this.props.navigation.navigate(route);
     }
 

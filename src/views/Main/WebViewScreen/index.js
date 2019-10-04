@@ -19,11 +19,24 @@ class WebViewScreen extends Component {
         };
     };
 
+    webView = {
+        ref: null,
+    }
+
+    onGoBack = () => {
+        if(this.webView.ref) this.webView.ref.goBack();
+    }
+
+    onGoForward = () => {
+        if(this.webView.ref) this.webView.ref.goForward();
+    }
+
+    onReload = () => {
+        if(this.webView.ref) this.webView.ref.reload();
+    }
+
     render() {
-        console.log("vananh")
-        console.log(this.state.link)
         const { link } = this.state
-        let WebViewRef;
 
         return (
             <View style={Styles.waperContainer}>
@@ -34,7 +47,7 @@ class WebViewScreen extends Component {
                 </View>
                 <View style={Styles.waperWebView}>
                     <WebView
-                        ref={WEBVIEW_REF => (WebViewRef = WEBVIEW_REF)}
+                        ref={(webView) => { this.webView.ref = webView; }}
                         source={{ uri: link }}
                         style={{ height: '100%', width: '100%', resizeMode: 'cover' }}
                         javaScriptEnabled={true}
@@ -46,13 +59,13 @@ class WebViewScreen extends Component {
                 </View>
                 <View style={Styles.container}>
                     <View style={Styles.waperFooder}>
-                        <TouchableOpacity onpress={() => { WebViewRef && WebViewRef.goBack(); }}>
+                        <TouchableOpacity onPress={() => this.onGoBack()}>
                             <ArrowLeft fill='white'></ArrowLeft>
                         </TouchableOpacity>
-                        <TouchableOpacity onpress={() => { WebViewRef && WebViewRef.goForward(); }}>
+                        <TouchableOpacity onPress={() => this.onGoForward()}>
                             <ArrowRight fill='white'></ArrowRight>
                         </TouchableOpacity>
-                        <TouchableOpacity onpress={() => { WebViewRef && WebViewRef.reload(); }}>
+                        <TouchableOpacity onPress={() => this.onReload()}>
                             <IconRefresh fill='white'></IconRefresh>
                         </TouchableOpacity>
                     </View>

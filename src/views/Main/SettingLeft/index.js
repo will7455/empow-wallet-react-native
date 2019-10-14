@@ -97,8 +97,9 @@ export default class SettingLeft extends Component {
                         showsVerticalScrollIndicator={true}
                     />
                 </View>
-                <Button children="Log out" onPress={() => this.clickLogout()} isLoading={this.state.loading}></Button>
-                <Menu navigation={this.props.navigation}></Menu>
+                <View style={{alignItems: 'center'}}>
+                    <Button children="Log out" onPress={() => this.clickLogout()} isLoading={this.state.loading}></Button>
+                </View>
             </View>
         )
     }

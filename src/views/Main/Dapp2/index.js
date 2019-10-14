@@ -6,8 +6,8 @@ import {
     TouchableOpacity,
     FlatList,
     ActivityIndicator,
-    Linking,
-    Image
+    Image,
+    Alert
 } from 'react-native'
 import Styles from './styled'
 import BgHeader from '../../../assets/images/header-home-bg.png'
@@ -138,7 +138,26 @@ class Dapp2 extends Component {
             });
     }
 
-    clickDapp = (website) => {
+    clickDapp = (website, fullname) => {
+        Alert.alert(
+            "Thông báo",
+            `Bạn sắp vào DApp của bên thứ ba:\n                "${fullname}"\n
+            
+Xin hay lưu ý Chính sách bảo mật có liên quan đến DApp này, bảo vệ sự an toàn cho tài sản của bạn. Tất cả các hành vi và tình trạng sử dụng trong DApp này của bạn, đều do nhà cung ứng DApp này phụ trách.`,
+            [
+                { text: "Later", onPress: () => console.log("later pressed") },
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+                { text: "OK", onPress: () => this.onWebView(website) }
+            ],
+            { cancelable: false }
+        );
+    }
+
+    onWebView = (website) => {
         this.props.navigation.navigate('WebView', {
             link: website
         })
@@ -156,7 +175,7 @@ class Dapp2 extends Component {
 
     renderItem = ({ item, index }) => {
         return (
-            <TouchableOpacity onPress={() => this.clickDapp(item.website)}>
+            <TouchableOpacity onPress={() => this.clickDapp(item.website, item.fullname)}>
                 <LinearGradient style={Styles.coin}
                     colors={['#46527e', '#383c6e', '#1b1464']}
                     start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
@@ -256,8 +275,6 @@ class Dapp2 extends Component {
 
                 {this.renderListDapp()}
                 {this.renderModel()}
-
-                <Menu navigation={this.props.navigation}></Menu>
             </View>
         )
     }

@@ -137,7 +137,6 @@ export default class Search extends Component {
                     />
                 </View>
                 <Button children="Log out" onPress={() => this.clickLogout()} isLoading={this.state.loading}></Button>
-                <Menu navigation={this.props.navigation}></Menu>
             </View>
         )
     }

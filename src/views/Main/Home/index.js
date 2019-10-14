@@ -60,6 +60,7 @@ class Home extends Component {
     }
 
     clickCoinDetail = (index) => {
+        console.log(index);
 
         const accountInfo = this.props.accountInfo[index]
 
@@ -214,8 +215,6 @@ class Home extends Component {
 
 
                 {this.renderListCoin()}
-
-                <Menu navigation={this.props.navigation}></Menu>
             </View>
         )
     }

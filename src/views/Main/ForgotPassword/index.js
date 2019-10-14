@@ -88,8 +88,6 @@ class ForgotPassword extends Component {
                 </View>
 
                 <Button children="Reset password" onPress={() => this.clickReset()} isLoading={this.state.loading}></Button>
-
-                <Menu navigation={this.props.navigation}></Menu>
             </ImageBackground>
         )
     }

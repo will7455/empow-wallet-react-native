@@ -180,8 +180,6 @@ class SignUp extends Component {
                 </View>
 
                 <Button children="Sign up" onPress={() => this.clickSignUp()} isLoading={this.state.loading}></Button>
-
-                <Menu navigation={this.props.navigation}></Menu>
             </ImageBackground>
         )
     }

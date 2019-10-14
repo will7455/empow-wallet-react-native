@@ -151,8 +151,6 @@ class SignIn extends Component {
                 <TouchableOpacity onPress={() => this.clickSignUp()}>
                     <Text style={[Styles.textGarener, Styles.text3]}>Sign up</Text>
                 </TouchableOpacity>
-
-                <Menu navigation={this.props.navigation}></Menu>
             </ImageBackground>
         )
     }
@@ -161,7 +159,6 @@ class SignIn extends Component {
         return (
             <View style={{ backgroundColor: '#534e73', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100%' }}>
                 <ActivityIndicator color='white'></ActivityIndicator>
-                <Menu navigation={this.props.navigation}></Menu>
             </View>
         )
     }

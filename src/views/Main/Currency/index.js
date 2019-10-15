@@ -17,15 +17,19 @@ export default class Currency extends Component {
             data: [
                 {
                     name: 'USD',
+                    type: 'usd'
                 },
                 {
                     name: 'EURO',
+                    type: 'eur'
                 },
                 {
                     name: 'POUND',
+                    type: 'gbp'
                 },
                 {
                     name: 'YEN',
+                    type: 'yen'
                 },
             ],
         }
@@ -35,7 +39,7 @@ export default class Currency extends Component {
         var data = this.state.data;
         var currency = StorageService.setting.currency;
         for (let i = 0; i < data.length; i++) {
-            if (data[i].name.toLocaleLowerCase() === currency.toLocaleLowerCase()) {
+            if (data[i].type.toLocaleLowerCase() === currency.toLocaleLowerCase()) {
                 data[i].isChecked = true;
                 break;
             }
@@ -52,7 +56,7 @@ export default class Currency extends Component {
         for (let i = 0; i < data.length; i++) {
             if (i === index) {
                 data[i].isChecked = true;
-                value = data[i].name;
+                value = data[i].type;
             } else {
                 data[i].isChecked = false
             }
@@ -65,7 +69,7 @@ export default class Currency extends Component {
 
         StorageService.setting.currency = value;
         StorageService.save('setting');
-        this.props.navigation.navigate('Setting');
+        this.props.navigation.navigate('Unlock');
     }
 
     renderItem = ({ item, index }) => {

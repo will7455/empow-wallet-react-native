@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
 
     container: {
         width: screenWidth - 20,
+        paddingTop: 20
     },
 
     textGarener: {

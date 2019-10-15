@@ -2,92 +2,69 @@ import React, { Component } from 'react'
 import {
     View,
     Text,
-    Switch,
     TouchableOpacity,
     FlatList,
     TextInput,
     Clipboard
 } from 'react-native'
 import Styles from './styled'
-import LogoTron from '../../../assets/images/logo-tron-2.svg'
-import LogoBinance from '../../../assets/images/logo-binance-2.svg'
-import LogoBitcoin from '../../../assets/images/logo-bitcoin-2.svg'
-import LogoEthereum from '../../../assets/images/logo-ethereum-2.svg'
-import LogoIota from '../../../assets/images/logo-iota-2.svg'
-import LogoMonero from '../../../assets/images/logo-monero-2.svg'
 import Back from '../../../components/Back'
 import IconCopy from '../../../assets/images/icon-copy.svg'
+import CoinIcon from '../../../components/CoinIcon'
+import { connect } from 'react-redux';
+import IconSearch from '../../../assets/images/icon-search.svg'
 
-export default class ExportAccount extends Component {
+class ExportAccount extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            text: "vanvanvanvanvanv vanvanvna vanvanvn vanvanvanv vavnavn",
-            isShowToken: false,
-            filterResult: [
-                {
-                    name: 'Tron',
-                    symbol: 'TRX',
-                    keyPublic: 'vanvan',
-                    keyPrivate: 'vananh'
-                },
-                {
-                    name: 'Bitcoin',
-                    symbol: 'BTC',
-                    keyPublic: 'vanvan',
-                    keyPrivate: 'vananh'
-                },
-                {
-                    name: 'Ethereum',
-                    symbol: 'ETH',
-                    keyPublic: 'vanvan',
-                    keyPrivate: 'vananh'
-                },
-                {
-                    name: 'Binance',
-                    symbol: 'BNB',
-                    keyPublic: 'vanvan',
-                    keyPrivate: 'vananh'
-                },
-                {
-                    name: 'Monero',
-                    symbol: 'MRX',
-                    keyPublic: 'vanvan',
-                    keyPrivate: 'vananh'
-                },
-            ]
+            filterResult: this.props.accountInfo
         }
     }
 
-    renderLogo(name) {
-        if (name.toLowerCase() === 'tron') {
-            return LogoTron;
-        }
+    onSearch = (text) => {
+        const { accountInfo } = this.props
+        let query = text
+        query = query.trim().toLowerCase()
 
-        if (name.toLowerCase() === 'binance') {
-            return LogoBinance;
-        }
+        let result = []
 
-        if (name.toLowerCase() === 'bitcoin') {
-            return LogoBitcoin;
-        }
+        if (query.trim() == '') {
+            this.setState({
+                filterResult: accountInfo
+            })
+        } else {
+            accountInfo.map((value, index) => {
+                if (value.name.toLowerCase().search(query) != -1 || value.symbol.toLowerCase().search(query) != -1) {
+                    result.push(Object.assign(value, { index }))
+                }
+            })
 
-        if (name.toLowerCase() === 'ethereum') {
-            return LogoEthereum;
-        }
-
-        if (name.toLowerCase() === 'iota') {
-            return LogoIota;
-        }
-
-        if (name.toLowerCase() === 'monero') {
-            return LogoMonero;
+            this.setState({
+                filterResult: result
+            })
         }
     }
-
     renderItem = ({ item, index }) => {
-        var Logo = this.renderLogo(item.name);
+        if (item.customToken || item.type == 'BEP2') {
+            item.logo = `logo_${item.type.toLowerCase()}`
+        } else {
+            item.logo = `logo_${item.symbol.toLowerCase()}`
+        }
+
+        if (item.customToken || item.type == 'BEP2') {
+            item.logo = `logo_${item.type.toLowerCase()}`
+        } else {
+            item.logo = `logo_${item.symbol.toLowerCase()}`
+        }
+
+        if (item.type === 'coin') {
+            item.logo = `logo_${item.name.toLowerCase()}`
+        }
+
+        var Logo = CoinIcon[item.logo] || CoinIcon['logo_888'];
+
         return (
             <View style={[Styles.coin, index === 0 ? { borderTopColor: '#534e73', borderTopWidth: 1 } : '']}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', flex: 0.7 }}>
@@ -95,30 +72,51 @@ export default class ExportAccount extends Component {
                         <Logo></Logo>
                     </View>
                     <View style={{ marginLeft: 10 }}>
-                        <Text style={[Styles.textGarener, { fontSize: 14 }]}>{item.name}</Text>
+                        <Text style={[Styles.textGarener, { fontSize: 14 }]}>{item.name.length <= 8 ? item.name : item.name.substring(0, 8) + '...'}</Text>
                         <Text style={[Styles.textGarener, { fontSize: 12, color: '#8f90a2' }]}>{item.symbol}</Text>
                     </View>
                 </View>
 
-                <View style={{flex: 1}}>
-                    <View>
+                <View style={{ flex: 1 }}>
+                    {item.publicKey && <View>
                         <Text style={[Styles.textGarener, { fontSize: 10, color: '#8f90a2' }]}>Public key</Text>
-                        <View style={{flexDirection: 'row', width: '100%', justifyContent:'space-between'}}>
-                            <Text style={[Styles.textGarener, { fontSize: 13 }]}>{item.keyPublic}</Text>
-                            <TouchableOpacity onPress={() => { Clipboard.setString(item.keyPublic) }}>
+                        <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
+                            <Text style={[Styles.textGarener, { fontSize: 13 }]}>{item.publicKey.length <= 16 ? item.publicKey : item.publicKey.substring(0, 16) + '...'}</Text>
+                            <TouchableOpacity onPress={() => { Clipboard.setString(item.publicKey) }}>
                                 <IconCopy />
                             </TouchableOpacity>
                         </View>
-                    </View>
+                    </View>}
                     <View>
                         <Text style={[Styles.textGarener, { fontSize: 10, color: '#8f90a2' }]}>Private key</Text>
-                        <View style={{flexDirection: 'row', width: '100%', justifyContent:'space-between'}}>
-                            <Text style={[Styles.textGarener, { fontSize: 13 }]}>{item.keyPrivate}</Text>
-                            <TouchableOpacity onPress={() => { Clipboard.setString(item.keyPrivate) }}>
+                        <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
+                            <Text style={[Styles.textGarener, { fontSize: 13 }]}>{item.privateKey.length <= 16 ? item.privateKey : item.privateKey.substring(0, 16) + '...'}</Text>
+                            <TouchableOpacity onPress={() => { Clipboard.setString(item.privateKey) }}>
                                 <IconCopy />
                             </TouchableOpacity>
                         </View>
                     </View>
+
+                    {item.ownerPublicKey && <View>
+                        <Text style={[Styles.textGarener, { fontSize: 10, color: '#8f90a2' }]}>Owner Public Key</Text>
+                        <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
+                            <Text style={[Styles.textGarener, { fontSize: 13 }]}>{item.ownerPublicKey.length <= 16 ? item.ownerPublicKey : item.ownerPublicKey.substring(0, 16) + '...'}</Text>
+                            <TouchableOpacity onPress={() => { Clipboard.setString(item.ownerPublicKey) }}>
+                                <IconCopy />
+                            </TouchableOpacity>
+                        </View>
+                    </View>}
+
+                    {item.ownerPublicKey && <View>
+                        <Text style={[Styles.textGarener, { fontSize: 10, color: '#8f90a2' }]}>Owner Private Key</Text>
+                        <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
+                            <Text style={[Styles.textGarener, { fontSize: 13 }]}>{item.ownerPrivateKey.length <= 16 ? item.ownerPrivateKey : item.ownerPrivateKey.substring(0, 16) + '...'}</Text>
+                            <TouchableOpacity onPress={() => { Clipboard.setString(item.ownerPrivateKey) }}>
+                                <IconCopy />
+                            </TouchableOpacity>
+                        </View>
+                    </View>}
+
                 </View>
             </View>
         )
@@ -139,20 +137,25 @@ export default class ExportAccount extends Component {
 
 
     render() {
+        const { accountInfo } = this.props
+
         return (
             <View style={Styles.waperContainer}>
                 <View style={Styles.container}>
                     <View style={Styles.waperHeader}>
                         <Back navigation={this.props.navigation} preRoute='Setting'></Back>
-                        <Text style={[Styles.textGarener, { marginLeft: 20 }]}>Export account</Text>
+                        <View style={Styles.waperSearch}>
+                            <IconSearch fill="white"></IconSearch>
+                            <TextInput style={Styles.input} onChangeText={(text) => this.onSearch(text)}></TextInput>
+                        </View>
                     </View>
                     <View style={{ position: 'relative' }}>
                         <TextInput
                             multiline={true}
                             numberOfLines={3}
-                            value={this.state.text}
+                            value={accountInfo[0].mnemonic}
                             style={[Styles.textInput, Styles.waperInput]} />
-                        <TouchableOpacity style={{ position: 'absolute', right: 10, bottom: 10 }} onPress={() => { Clipboard.setString(this.state.text) }}>
+                        <TouchableOpacity style={{ position: 'absolute', right: 10, bottom: 10 }} onPress={() => { accountInfo[0].mnemonic }}>
                             <IconCopy />
                         </TouchableOpacity>
                     </View>
@@ -162,3 +165,8 @@ export default class ExportAccount extends Component {
         )
     }
 }
+
+export default connect(state => ({
+    accountInfo: state.app.allAccountInfo
+}), ({
+}))(ExportAccount)

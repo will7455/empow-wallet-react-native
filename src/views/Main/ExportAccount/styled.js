@@ -23,7 +23,28 @@ const styles = StyleSheet.create({
     waperHeader: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 50,
+        marginBottom: 30,
+        height: 32
+    },
+
+    waperSearch: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        height: '100%',
+        borderRadius: 8,
+        flex: 3,
+        backgroundColor: '#534e73',
+        paddingRight: 10,
+        paddingLeft: 10,
+        marginLeft: 5
+    },
+
+    input: {
+        marginLeft: 5,
+        width: '90%',
+        color: 'white',
+        height: '100%',
+        padding: 0
     },
 
     textInput: {

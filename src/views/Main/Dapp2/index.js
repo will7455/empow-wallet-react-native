@@ -20,7 +20,7 @@ import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import PopupWithdraw from '../../../components/PopupWithdraw'
 import IconRefresh from '../../../assets/images/icon-restore.svg'
 import { API_ENDPOINT } from '../../../constants/index'
-import Setting from '../../../assets/images/icon-setting.svg'
+import Setting from '../../../assets/images/icon-setting-left.svg'
 
 class Dapp2 extends Component {
     constructor(props) {

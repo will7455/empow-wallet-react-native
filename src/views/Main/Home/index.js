@@ -60,8 +60,6 @@ class Home extends Component {
     }
 
     clickCoinDetail = (index) => {
-        console.log(index);
-
         const accountInfo = this.props.accountInfo[index]
 
         if (accountInfo.name == 'EOS' && !accountInfo.address) {

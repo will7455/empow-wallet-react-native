@@ -11,7 +11,6 @@ import SendScreen from '../Send'
 import RamScreen from '../Ram'
 import CpuOrNetScreen from '../CpuOrNet'
 import ReceiveScreen from '../Receive'
-import SearchDappScreen from '../SearchDapp'
 import CreateEosScreen from '../CreateEos'
 import PaymentScreen from '../Payment'
 import CreateIostScreen from '../CreateIost'
@@ -28,7 +27,6 @@ export default createStackNavigator({
 	Ram: RamScreen,
 	CpuOrNet: CpuOrNetScreen,
 	Receive: ReceiveScreen,
-	SearchDapp: SearchDappScreen,
 	CreateEos: CreateEosScreen,
 	Payment: PaymentScreen,
 	CreateIost: CreateIostScreen,

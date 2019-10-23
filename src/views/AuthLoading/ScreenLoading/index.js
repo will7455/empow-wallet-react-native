@@ -6,7 +6,6 @@ import Img2 from '../../../assets/images/img-loading-2.svg'
 import Img3 from '../../../assets/images/img-loading-3.svg'
 import BG from '../../../assets/images/bg-loading.png'
 import Styles from './styled'
-//import AsyncStorage from '@react-native-community/async-storage'
 
 export default class ScreenLoading extends Component {
     constructor(props) {

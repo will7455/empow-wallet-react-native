@@ -22,6 +22,7 @@ import { connect } from 'react-redux';
 
 console.reportErrorsAsExceptions = false;
 console.disableYellowBox = true;
+
 class Home extends Component {
 
     constructor(props) {

@@ -42,7 +42,7 @@ export default class SignTransaction extends Component {
         if (checked) timeExpired = -1
         if (defaultValue === 0) timeExpired = 0
 
-        if(timeExpired && timeExpired != 0) {
+        if (timeExpired && timeExpired != 0) {
             StorageService.addWhitelist(WalletService.transactionQueue.transaction.contractAddress, timeExpired)
         }
 
@@ -130,11 +130,8 @@ export default class SignTransaction extends Component {
                                 </LinearGradient>
                             </TouchableOpacity>
                         </View>
-
                     </View>
-
                 </View>
-
             </View>
         )
     }

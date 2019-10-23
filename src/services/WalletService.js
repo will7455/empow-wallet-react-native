@@ -72,6 +72,10 @@ const WalletService = {
         })
     },
 
+    updateEthereumCallback (callback) {
+        EthereumService.callResponse = callback
+    },
+
     getEthereumNetworkID() {
         return EthereumService.networkID
     },
@@ -109,7 +113,7 @@ const WalletService = {
 
     getAddress(coinName = null) {
 
-        if (!StorageService.ready || !StorageService.accounts) return []
+        if (!StorageService.accounts) return []
 
         if (coinName) {
             return [StorageService.accounts[coinName].address]
@@ -995,9 +999,7 @@ const WalletService = {
         callback(result)
     },
 
-    tronTransaction(uuid, messageUUID, transaction, callback, acceptCallback) {
-
-        if (!StorageService.ready) return callback({ error: 'You need unlock wallet first' })
+    tronTransaction(messageUUID, transaction, callback, acceptCallback) {
 
         let transactionDecode = {}
 
@@ -1026,7 +1028,6 @@ const WalletService = {
         }
 
         this.transactionQueue = {
-            uuid,
             messageUUID,
             rawTransaction: transaction,
             transaction: transactionDecode,
@@ -1038,14 +1039,10 @@ const WalletService = {
             return;
         }
 
-        //LeftPanelService.ready = false
-        this.openPopup()
         callback()
     },
 
-    ethereumTransaction(type, uuid, messageUUID, rpcData, transaction, callback, acceptCallback) {
-
-        if (!StorageService.ready) return callback({ error: 'You need unlock wallet first' })
+    ethereumTransaction(type,messageUUID, rpcData, transaction, callback, acceptCallback) {
 
         let obj = {}
 
@@ -1073,7 +1070,6 @@ const WalletService = {
         }
 
         WalletService.transactionQueue = {
-            uuid,
             messageUUID,
             rpcData,
             rawTransaction: transaction,
@@ -1092,14 +1088,10 @@ const WalletService = {
             return;
         }
 
-        //LeftPanelService.ready = false
-        this.openPopup()
         callback()
     },
 
     eosTransaction(uuid, messageUUID, transaction, callback, acceptCallback) {
-
-        if (!StorageService.ready) return callback({ error: 'You need unlock wallet first' })
 
         this.transactionQueue = {
             uuid,
@@ -1128,8 +1120,6 @@ const WalletService = {
     },
 
     iostTransaction(uuid, messageUUID, transaction, callback, acceptCallback) {
-        if (!StorageService.ready) return callback({ error: 'You need unlock wallet first' })
-
         this.transactionQueue = {
             uuid,
             messageUUID,
@@ -1156,9 +1146,7 @@ const WalletService = {
     },
 
     async acceptTransaction() {
-        if (this.popup) this.closePopup()
-
-        let { uuid, messageUUID, rpcData, rawTransaction, transaction, acceptCallback } = this.transactionQueue
+        let { messageUUID, rpcData, rawTransaction, transaction, acceptCallback } = this.transactionQueue
 
         let result = null
         let error = null
@@ -1169,9 +1157,9 @@ const WalletService = {
                 if(rawTransaction[0].data && FirebaseService.isLoggedIn) {
                     ApiService.addTransactionPending(result, 'ethereum', await FirebaseService.getIdToken())
                 }
-                acceptCallback(uuid, messageUUID, rpcData, result)
+                acceptCallback(messageUUID, rpcData, result)
             } catch (error) {
-                acceptCallback(uuid, messageUUID, rpcData, {
+                acceptCallback(messageUUID, rpcData, {
                     error
                 })
             }
@@ -1185,9 +1173,9 @@ const WalletService = {
                     ApiService.addTransactionPending(result.txID, 'tron', await FirebaseService.getIdToken())
                 }
 
-                acceptCallback(uuid, messageUUID, result)
+                acceptCallback(messageUUID, result)
             } catch (err) {
-                acceptCallback(uuid, messageUUID, {
+                acceptCallback(messageUUID, {
                     error: err.message
                 })
             }
@@ -1196,9 +1184,9 @@ const WalletService = {
         if (transaction.coin == 'eos') {
             try {
                 result = await EosService.sendAction(rawTransaction)
-                acceptCallback(uuid, messageUUID, result)
+                acceptCallback(messageUUID, result)
             } catch (err) {
-                acceptCallback(uuid, messageUUID, {
+                acceptCallback(messageUUID, {
                     error: err.message
                 })
             }
@@ -1207,7 +1195,7 @@ const WalletService = {
         if (transaction.coin == 'iost') {
             try {
                 result = await IostService.sendAction(rawTransaction)
-                acceptCallback(uuid, messageUUID, result)
+                acceptCallback(messageUUID, result)
 
                 let interval = setInterval(() => {
                     IostService.iost.currentRPC.transaction.getTxReceiptByTxHash(result).then(async res => {
@@ -1218,7 +1206,7 @@ const WalletService = {
                     })
                 }, 1000)
             } catch (err) {
-                acceptCallback(uuid, messageUUID, {
+                acceptCallback(messageUUID, {
                     error: err.message
                 })
             }
@@ -1229,9 +1217,9 @@ const WalletService = {
     },
 
     rejectTransaction(callback) {
-        this.closePopup()
-        //LeftPanelService.ready = true
-        callback(this.transactionQueue.uuid, this.transactionQueue.messageUUID)
+        callback(this.transactionQueue.messageUUID, {
+            error: 'Transaction reject by user'
+        })
         this.transactionQueue = null
     },
 }

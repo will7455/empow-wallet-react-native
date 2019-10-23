@@ -3,7 +3,6 @@ import { View, Text, StatusBar } from 'react-native'
 import { connect } from 'react-redux'
 import ScreenLoading from './ScreenLoading'
 import Swiper from 'react-native-swiper'
-import AsyncStorage from '@react-native-community/async-storage';
 import StorageService from '../../services/StorageService'
 import FirebaseService from '../../services/FirebaseService'
 import ApiService from '../../services/ApiService'

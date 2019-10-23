@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 
     waperWebView: {
         width: '100%',
-        height: screenHeight - 120
+        height: screenHeight - 170
     },
 
     waperFooder: {

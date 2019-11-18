@@ -15,6 +15,7 @@ import CircleCheckBox, { LABEL_POSITION } from 'react-native-circle-checkbox'
 import Button from '../../../components/Button'
 import { connect } from 'react-redux'
 import StorageService from '../../../services/StorageService'
+import AsyncStorage from '@react-native-community/async-storage';
 
 class Register extends Component {
 
@@ -79,6 +80,9 @@ class Register extends Component {
         }
 
 		setTimeout(() => {
+			AsyncStorage.setItem(
+                'pw', this.state.password
+            )
 			StorageService.init(this.state.password);
 			this.props.navigation.navigate('CreateWallet');
 		}, 1000);

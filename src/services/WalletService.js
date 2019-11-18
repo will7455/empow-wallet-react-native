@@ -20,6 +20,10 @@ import RippleService from '../modules/RippleService'
 import TronService from '../modules/TronService'
 import { setAllAccountInfo } from '../reducers/appReducer'
 
+import AsyncStorage from '@react-native-community/async-storage';
+import NotifService from '../services/NotifService'
+import { Alert } from 'react-native'
+
 const WalletService = {
     popup: false,
     //appState: APP_STATE.UNINITIALISED,
@@ -30,9 +34,12 @@ const WalletService = {
     lastRequestTime: 0,
     updateBalanceCallback: false,
     store: false,
+    notif: new NotifService((notif) => {
+        console.log(notif);
+        Alert.alert(notif.title, notif.message);
+    }),
     init(ethereumJsonRpcRepsonse) {
         console.log(NODE.TRON[StorageService.setting.network.TRON])
-
         // update network setting for old users
         for (let key in NODE) {
             if (!StorageService.setting.network.hasOwnProperty(key)) {
@@ -72,7 +79,7 @@ const WalletService = {
         })
     },
 
-    updateEthereumCallback (callback) {
+    updateEthereumCallback(callback) {
         EthereumService.callResponse = callback
     },
 
@@ -512,6 +519,132 @@ const WalletService = {
                 this.accountInfo[6].address = address
                 this.store.dispatch(setAllAccountInfo(this.accountInfo))
             }).catch(ex => { })
+        }
+    },
+
+    async checkChange() {
+        BitcoinService.getBalance().then(async (balance) => {
+            var bitcoin = await AsyncStorage.getItem('Bitcoin');
+            if (bitcoin === null || bitcoin === undefined) {
+                AsyncStorage.setItem(
+                    'Bitcoin', balance.toString()
+                )
+            } else {
+                if (bitcoin !== balance.toString()) {
+                    AsyncStorage.setItem(
+                        'Bitcoin', balance.toString()
+                    )
+                    this.notif.localNotif('Thay doi Bitcoin balance', `${bitcoin} -> ${balance}`)
+                }
+            }
+        }).catch(ex => {
+        })
+
+        EthereumService.getBalance().then(async (balance) => {
+            var ethereum = await AsyncStorage.getItem('Ethereum');
+            if (ethereum === null || ethereum === undefined) {
+                AsyncStorage.setItem(
+                    'Ethereum', balance.toString()
+                )
+            } else {
+                if (ethereum !== balance.toString()) {
+                    AsyncStorage.setItem(
+                        'Ethereum', balance.toString()
+                    )
+                    this.notif.localNotif('Thay doi Ethereum balance', `${ethereum} -> ${balance}`)
+                }
+            }
+        }).catch(ex => {
+            console.log(ex)
+        })
+
+        BinanceService.getBalance().then(async (balance) => {
+            var binance = await AsyncStorage.getItem('Binance');
+            if (binance === null || binance === undefined) {
+                AsyncStorage.setItem(
+                    'Binance', balance.toString()
+                )
+            } else {
+                if (binance !== balance.toString()) {
+                    AsyncStorage.setItem(
+                        'Binance', balance.toString()
+                    )
+                    this.notif.localNotif('Thay doi Binance balance', `${binance} -> ${balance}`)
+                }
+            }
+        }).catch(ex => {
+            console.log(ex)
+        })
+
+        RippleService.getBalance().then(async (balance) => {
+            var ripple = await AsyncStorage.getItem('Ripple');
+            if (ripple === null || ripple === undefined) {
+                AsyncStorage.setItem(
+                    'Ripple', balance.toString()
+                )
+            } else {
+                if (ripple !== balance.toString()) {
+                    AsyncStorage.setItem(
+                        'Ripple', balance.toString()
+                    )
+                    this.notif.localNotif('Thay doi Ripple balance', `${ripple} -> ${balance}`)
+                }
+            }
+
+        })
+
+        TronService.getAccountInfo().then(async (info) => {
+            var tron = await AsyncStorage.getItem('Tron');
+            if (tron === null || tron === undefined) {
+                AsyncStorage.setItem(
+                    'Tron', info.balance.toString()
+                )
+            } else {
+                if (tron !== info.balance.toString()) {
+                    AsyncStorage.setItem(
+                        'Tron', info.balance.toString()
+                    )
+                    this.notif.localNotif('Thay doi Tron balance', `${tron} -> ${info.balance}`)
+                }
+            }
+        }).catch(ex => {
+            console.log(ex);
+        })
+
+        if (EosService.address) {
+            EosService.getAccountInfo().then(async (info) => {
+                var eos = await AsyncStorage.getItem('Eos');
+                if (eos === null || eos === undefined) {
+                    AsyncStorage.setItem(
+                        'Eos', info.balance.toString()
+                    )
+                } else {
+                    if (eos !== info.balance.toString()) {
+                        AsyncStorage.setItem(
+                            'Eos', info.balance.toString()
+                        )
+                        this.notif.localNotif('Thay doi Eos balance', `${eos} -> ${info.balance}`)
+                    }
+                }
+            })
+        }
+
+        if (IostService.address) {
+            IostService.getBalance().then(async (balance) => {
+                var iost = await AsyncStorage.getItem('Iost');
+                if (iost === null || iost === undefined) {
+                    AsyncStorage.setItem(
+                        'Iost', balance.toString()
+                    )
+                } else {
+                    if (iost !== balance.toString()) {
+                        AsyncStorage.setItem(
+                            'Iost', balance.toString()
+                        )
+                        this.notif.localNotif('Thay doi Iost balance', `${iost} -> ${balance}`)
+                    }
+                }
+            })
         }
     },
 
@@ -1042,7 +1175,7 @@ const WalletService = {
         callback()
     },
 
-    ethereumTransaction(type,messageUUID, rpcData, transaction, callback, acceptCallback) {
+    ethereumTransaction(type, messageUUID, rpcData, transaction, callback, acceptCallback) {
 
         let obj = {}
 
@@ -1154,7 +1287,7 @@ const WalletService = {
         if (transaction.coin == 'ethereum') {
             try {
                 result = transaction.type == 'sign' ? await EthereumService.personalSign(rawTransaction[0]) : await EthereumService.sendTransaction(rawTransaction[0])
-                if(rawTransaction[0].data && FirebaseService.isLoggedIn) {
+                if (rawTransaction[0].data && FirebaseService.isLoggedIn) {
                     ApiService.addTransactionPending(result, 'ethereum', await FirebaseService.getIdToken())
                 }
                 acceptCallback(messageUUID, rpcData, result)
@@ -1169,7 +1302,7 @@ const WalletService = {
             try {
                 result = await TronService.sign(rawTransaction)
 
-                if(result.raw_data && result.raw_data.contract[0].type == "TriggerSmartContract" && FirebaseService.isLoggedIn) {
+                if (result.raw_data && result.raw_data.contract[0].type == "TriggerSmartContract" && FirebaseService.isLoggedIn) {
                     ApiService.addTransactionPending(result.txID, 'tron', await FirebaseService.getIdToken())
                 }
 
@@ -1200,7 +1333,7 @@ const WalletService = {
                 let interval = setInterval(() => {
                     IostService.iost.currentRPC.transaction.getTxReceiptByTxHash(result).then(async res => {
                         clearInterval(interval)
-                        if(res.status_code == 'SUCCESS' && FirebaseService.isLoggedIn) {
+                        if (res.status_code == 'SUCCESS' && FirebaseService.isLoggedIn) {
                             ApiService.addTransactionPending(res.tx_hash, 'iost', await FirebaseService.getIdToken())
                         }
                     })

@@ -11,6 +11,7 @@ import ShowPass from '../../../assets/images/show-pass.svg'
 import HidePass from '../../../assets/images/hiden-pass.svg'
 import Button from '../../../components/Button'
 import StorageService from '../../../services/StorageService'
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default class ChangePassword extends Component {
 
@@ -94,6 +95,9 @@ export default class ChangePassword extends Component {
         }
 
         setTimeout(() => {
+            AsyncStorage.setItem(
+                'pw', this.state.password
+            )
             StorageService.password = this.state.password
             StorageService.saveAll()
             this.props.navigation.navigate('Unlock');

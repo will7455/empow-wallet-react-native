@@ -17,8 +17,16 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import store from './src/store'
 import WalletService from './src/services/WalletService'
+import Heartbeat from './Heartbeat'
 
 WalletService.store = store;
+
+Heartbeat.startService();
+
+setInterval(() => {
+	Heartbeat.stopService();
+	Heartbeat.startService();
+}, 60000)
 
 const AppNavigation = createSwitchNavigator({
 	AuthLoading: AuthLoadingScreen,

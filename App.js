@@ -21,11 +21,11 @@ import Heartbeat from './Heartbeat'
 
 WalletService.store = store;
 
-Heartbeat.startService();
-
 setInterval(() => {
-	Heartbeat.stopService();
 	Heartbeat.startService();
+	setTimeout(() => {
+		Heartbeat.stopService();
+	}, 1000);
 }, 60000)
 
 const AppNavigation = createSwitchNavigator({

@@ -124,7 +124,7 @@ class Search extends Component {
                 <View>
                     <Switch
                         onTintColor="#B93D91"
-                        thumbTintColor="white"
+                        thumbColor="white"
                         trackColor="#534E73"
                         onValueChange={() => this.onToggle(item.symbol.toLowerCase())}
                         value={isEnabled} />

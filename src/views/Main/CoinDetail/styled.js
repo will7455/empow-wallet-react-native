@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#44405f',
         elevation: 6,
         overflow: 'hidden',
-        paddingTop: 10
+        paddingTop: 5
     },
 
     group1: {
@@ -39,29 +39,19 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingLeft: 10,
         paddingRight: 10,
-        marginBottom: 10
+        marginBottom: 5
     },
 
     group2: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: 10
+        marginBottom: 5
     },
 
     child1: {
         flexDirection: 'row',
         alignItems: 'center'
-    },
-
-    child2: {
-        flexDirection: 'row',
-        backgroundColor: '#574999',
-        borderRadius: 4,
-        justifyContent: 'space-between',
-        flex: 0.5,
-        height: 22,
-        overflow: 'hidden'
     },
 
     defaultChild2: {
@@ -73,11 +63,10 @@ const styles = StyleSheet.create({
 
     selectedChild2: {
         backgroundColor: '#7055e9',
-
     },
 
     waperTransaction: {
-        marginTop: 10
+        marginTop: 5
     },
 
     menu: {
@@ -99,7 +88,7 @@ const styles = StyleSheet.create({
     },
 
     waperList: {
-        marginTop: 10
+        marginTop: 5,
     },
 
     waperItem: {
@@ -132,7 +121,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginTop: 10
+        marginTop: 5
     },
 
     resource: {

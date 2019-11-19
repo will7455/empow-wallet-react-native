@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="154.678" height="124.356" viewBox="0 0 154.678 124.356">
   <defs>
-    <linearGradient id="linear-gradient" x1="50" x2="50" y2="100" gradientUnits="objectBoundingBox">
+    <linearGradient id="linear-gradient"  x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
       <stop offset="0" stop-color="#f94f4f"/>
       <stop offset="1" stop-color="#8e3ddf"/>
     </linearGradient>
